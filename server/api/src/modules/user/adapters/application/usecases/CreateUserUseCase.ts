@@ -4,6 +4,7 @@ import type UserRepository from "src/modules/user/repositories/UserRepo";
 import { Inject, Injectable } from "@nestjs/common";
 import CreateUserDto from "../dto/CreateUserDto";
 import { Role, UserStatus } from "src/modules/user/entities/User";
+import type HasherProvider from "src/shared/interfaces/HasherProvider";
 
 @Injectable()
 export default class CreateUserUseCase implements UseCase<
@@ -13,11 +14,14 @@ export default class CreateUserUseCase implements UseCase<
   constructor(
     @Inject("UserRepository")
     private readonly repo: UserRepository,
+
+    @Inject("HasherProvider")
+    private readonly hasher: HasherProvider,
   ) {}
 
   async execute(data: CreateUserDto): Promise<ServerMessageResponse> {
     const { name, password, phone, role, email } = data;
-
+    const hashedPassword = await this.hasher.hash(password);
     if (email) {
       const hasAnUserWithEmail = await this.repo.findByEmail(email);
 
@@ -36,7 +40,7 @@ export default class CreateUserUseCase implements UseCase<
 
     await this.repo.save({
       name,
-      password,
+      password: hashedPassword,
       phone,
       role: role === "CLIENT" ? Role.PASSENGER : Role.DRIVER,
       email: email,
