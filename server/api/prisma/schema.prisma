@@ -69,7 +69,6 @@ enum NotificationType {
   CHAT
 }
 
-
 model Location {
   id String @id @default(uuid())
   userId String @unique
@@ -78,10 +77,10 @@ model Location {
   longitude Float
   heading Float? 
   speed Float?
+  metadata Json?
   createdAt DateTime @default(now())
   @@index([ userId])
 }
-
 
 model User {
   id String @id @default(uuid())
@@ -113,7 +112,6 @@ model Passenger {
   updatedAt DateTime @updatedAt
 }
 
-
 enum KYCStatus {
   PENDING
   UNDER_REVIEW
@@ -121,7 +119,6 @@ enum KYCStatus {
   REJECTED
   EXPIRED
 }
-
 
 enum DocumentType {
   ID_CARD
@@ -140,10 +137,7 @@ model AuditLog {
  entityId String?
  metadata Json?
  createdAt DateTime @default(now())
-
 }
-
-
 
 model DriverKYC {
   id String @id @default(uuid())
@@ -203,6 +197,7 @@ model Vehicle {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 model Route {
   id String @id @default(uuid())
   name String? 
@@ -221,7 +216,6 @@ model Route {
   updatedAt DateTime @updatedAt
 }
 
-
 model RouteStop {
   id String @id @default(uuid())
   routeId String
@@ -234,7 +228,6 @@ model RouteStop {
   createdAt DateTime @default(now())
   @@index([routeId])
 }
-
 
 model Trip {
   id String @id @default(uuid())
@@ -256,7 +249,6 @@ model Trip {
   @@index([departureTime])
 }
 
-
 model Booking {
   id String @id @default(uuid())
   tripId String
@@ -275,7 +267,6 @@ model Booking {
   @@index([tripId])
   @@index([passengerId])
 }
-
 
 model TripInvite {
   id String @id @default(uuid())
