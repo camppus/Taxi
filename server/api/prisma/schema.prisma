@@ -6,29 +6,48 @@ datasource db {
   provider = "postgresql"
 }
 
+
 enum Role {
   ADMIN
-  DRIVER
   PASSENGER
+  DRIVER
 }
 
 enum UserStatus {
   ACTIVE
-  BLOCKED
   PENDING
+  SUSPENDED
+  BLOCKED
+  DEACTIVATED
 }
 
-enum VehicleType {
-  CAR
-  VAN
-  MINIBUS
-  BUS
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum DriverRequestStatus {
+  PENDING
+  IN_REVIEW
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum VehicleStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+  INACTIVE
 }
 
 enum TripStatus {
   DRAFT
-  SCHEDULED
-  BOARDING
+  PUBLISHED
+  AVAILABLE
+  FULL
   IN_PROGRESS
   COMPLETED
   CANCELLED
@@ -36,29 +55,28 @@ enum TripStatus {
 
 enum BookingStatus {
   PENDING
+  PENDING_PAYMENT
+  AWAITING_CONFIRMATION
   CONFIRMED
   REJECTED
   CANCELLED
+  IN_TRIP
   COMPLETED
 }
 
-enum InviteStatus {
+enum PaymentStatus {
   PENDING
-  ACCEPTED
-  REJECTED
-  EXPIRED
+  PROCESSING
+  PAID
+  FAILED
+  CANCELLED
+  REFUNDED
 }
 
-enum MessageType {
-  TEXT
-  IMAGE
-  LOCATION
-}
-
-enum OTPType {
-  LOGIN
-  VERIFY_PHONE
-  RESET_PASSWORD
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
 }
 
 enum NotificationType {
@@ -67,285 +85,342 @@ enum NotificationType {
   PAYMENT
   TRIP
   CHAT
-}
-
-model Location {
-  id String @id @default(uuid())
-  userId String @unique
-  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
-  latitude Float
-  longitude Float
-  heading Float? 
-  speed Float?
-  metadata Json?
-  createdAt DateTime @default(now())
-  @@index([ userId])
-}
-
-model User {
-  id String @id @default(uuid())
-  name String
-  email String? @unique
-  phone String @unique
-  password String
-  role Role
-  status UserStatus @default(ACTIVE)
-  passenger Passenger?
-  driver Driver?
-  notifications Notification[]
-  otpCodes OTPCode[]
-  sentMessages ChatMessage[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  location Location?
-  givenRatings Rating[] @relation("GivenRatings")
-  receivedRatings Rating[] @relation("ReceivedRatings")
-}
-
-model Passenger {
-  id String @id @default(uuid())
-  userId String @unique
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bookings Booking[]
-  invites TripInvite[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-enum KYCStatus {
-  PENDING
-  UNDER_REVIEW
-  APPROVED
-  REJECTED
-  EXPIRED
-}
-
-enum DocumentType {
-  ID_CARD
-  PASSPORT
-  DRIVER_LICENSE
-  VEHICLE_REGISTRATION
-  INSURANCE
-  OTHER
-}
-
-model AuditLog {
- id String @id @default(uuid())
- userId String?
- action String
- entity String
- entityId String?
- metadata Json?
- createdAt DateTime @default(now())
-}
-
-model DriverKYC {
-  id String @id @default(uuid())
-  driverId String @unique
-  fullName String
-  dateOfBirth DateTime?
-  nationality String
-  address String?
-  status KYCStatus @default(PENDING)
-  documents DriverDocument[]
-  reviewedBy String?
-  rejectionReason String?
-  submittedAt DateTime @default(now())
-  approvedAt DateTime?
-  expiresAt DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  driver Driver @relation( fields:[driverId],references:[id], onDelete:Cascade)
-}
-
-model DriverDocument {
-  id String @id @default(uuid())
-  driverKycId String
-  driverKyc DriverKYC @relation(fields:[driverKycId],references:[id],onDelete:Cascade)
-  type DocumentType
-  documentNumber String?
-  fileUrl String
-  verified Boolean @default(false)
-  expiresAt DateTime?
-  createdAt DateTime @default(now())
-}
-
-model Driver {
-  id String @id @default(uuid())
-  userId String @unique
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  vehicles Vehicle[]
-  trips Trip[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  online Boolean @default(false)
- lastOnline DateTime?
-  kyc DriverKYC?
-}
-
-model Vehicle {
-  id String @id @default(uuid())
-  driverId String
-  driver Driver @relation(fields: [driverId], references: [id], onDelete: Cascade)
-  plateNumber String @unique
-  brand String
-  model String
-  color String?
-  type VehicleType
-  capacity Int
-  trips Trip[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Route {
-  id String @id @default(uuid())
-  name String? 
-  origin String
-  originLatitude Float?
-  originLongitude Float?
-  destination String
-  destinationLatitude Float?
-  destinationLongitude Float?
-  distance Float? 
-  estimatedDuration Int? 
-  stops RouteStop[]
-  trips Trip[]
-  isActive Boolean @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model RouteStop {
-  id String @id @default(uuid())
-  routeId String
-  route Route @relation(fields:[routeId],references:[id],onDelete:Cascade)
-  name String 
-  latitude Float?
-  longitude Float?
-  order Int 
-  estimatedArrival Int? 
-  createdAt DateTime @default(now())
-  @@index([routeId])
-}
-
-model Trip {
-  id String @id @default(uuid())
-  driverId String
-  driver Driver @relation(fields: [driverId], references: [id], onDelete: Cascade)
-  vehicleId String
-  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
-  routeId String
-  route Route @relation(fields: [routeId], references: [id])
-  departureTime DateTime
-  status TripStatus @default(DRAFT)
-  totalSeats Int
-  bookings Booking[]
-  invites TripInvite[]
-  chat Chat?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ratings Rating[]
-  @@index([departureTime])
-}
-
-model Booking {
-  id String @id @default(uuid())
-  tripId String
-  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  passengerId String
-  passenger Passenger @relation(fields: [passengerId], references: [id], onDelete: Cascade)
-  seats Int @default(1)
-  pickupPoint String
-  dropoffPoint String
-  price Decimal @db.Decimal(10,2)
-  isPrimary Boolean @default(false)
-  status BookingStatus @default(PENDING)
-  payment Payment?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([tripId])
-  @@index([passengerId])
-}
-
-model TripInvite {
-  id String @id @default(uuid())
-  tripId String
-  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  passengerId String
-  passenger Passenger @relation(fields: [passengerId], references: [id], onDelete: Cascade)
-  message String?
-  status InviteStatus @default(PENDING)
-  createdAt DateTime @default(now())
-}
-
-model Chat {
-  id String @id @default(uuid())
-  tripId String @unique
-  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  messages ChatMessage[]
-  createdAt DateTime @default(now())
-}
-
-model ChatMessage {
-  id String @id @default(uuid())
-  chatId String
-  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
-  senderId String
-  sender User @relation(fields: [senderId], references: [id])
-  type MessageType @default(TEXT)
-  content String
-  createdAt DateTime @default(now())
-}
-
-model Payment {
-  id String @id @default(uuid())
-  bookingId String @unique
-  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
-  amount Decimal @db.Decimal(10,2)
-  transactionId String?
-  paidAt DateTime?
-  createdAt DateTime @default(now())
-}
-
-model OTPCode {
-  id String @id @default(uuid())
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  code String
-  type OTPType
-  expiresAt DateTime
-  used Boolean @default(false)
-  createdAt DateTime @default(now())
-}
-
-model Notification {
-  id String @id @default(uuid())
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title String
-  message String
-  type NotificationType
-  read Boolean @default(false)
-  metadata Json?
-  createdAt DateTime @default(now())
+  REMINDER
 }
 
 enum RatingTarget {
- DRIVER
- PASSENGER
+  DRIVER
+  PASSENGER
 }
 
+enum ComplaintStatus {
+  OPEN
+  IN_REVIEW
+  RESOLVED
+  CLOSED
+}
+
+enum ReportTarget {
+  DRIVER
+  PASSENGER
+}
+
+
+model User {
+  id          String      @id @default(uuid())
+  phone       String      @unique
+  role        Role        @default(PASSENGER)
+  status      UserStatus  @default(PENDING)
+  fullName        String
+  gender          Gender?
+  birthDate       DateTime?
+  photoUrl        String?
+  emergencyPhone  String?
+  driver      DriverProfile?
+  bookings    Booking[]
+  notifications Notification[]
+  otpCodes    OTPCode[]
+  messages Message[]
+  complaint Complaint[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  givenRatings    Rating[] @relation("GivenRatings")
+  receivedRatings Rating[] @relation("ReceivedRatings")
+  reportsMade     UserReport[] @relation("Reporter")
+  reportsReceived UserReport[] @relation("Reported")
+}
+
+model DriverProfile {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  requestStatus     DriverRequestStatus @default(PENDING)
+  identityNumber    String?
+  licenseNumber     String?
+  licenseExpiry     DateTime?
+  selfieUrl         String?
+  rejectionReason   String?
+  vehicles          Vehicle[]
+  documents         DriverDocument[]
+  trips             Trip[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model DriverDocument {
+  id          String   @id @default(uuid())
+  driverId    String
+  driver      DriverProfile @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  type        String
+  fileUrl     String
+  verified    Boolean @default(false)
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model Vehicle {
+  id                  String   @id @default(uuid())
+  driverId            String
+  name        String
+  capacity    Int
+  description String?
+  driver              DriverProfile @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  vehicleTypeId       String
+  brand               String
+  model               String
+  year                Int
+  color               String
+  plateNumber         String   @unique
+  totalSeats          Int
+  passengerSeats      Int
+  status              VehicleStatus @default(PENDING)
+  rejectionReason     String?
+  documents           VehicleDocument[]
+  trips               Trip[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model VehicleDocument {
+  id          String   @id @default(uuid())
+  vehicleId   String
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  type        String
+  fileUrl     String
+  verified    Boolean @default(false)
+  expiresAt   DateTime?
+
+  createdAt   DateTime @default(now())
+}
+
+
+model Location {
+  id          String   @id @default(uuid())
+  name        String
+  latitude    Float
+  longitude   Float
+  createdAt   DateTime @default(now()) 
+  routeOrigins      Route[] @relation("RouteOrigin")
+  routeDestinations Route[] @relation("RouteDestination")
+  routeStops  RouteStop[]
+  tripStops   TripStop[]
+  pickupBookings  Booking[] @relation("PickupStop")
+  dropoffBookings Booking[] @relation("DropoffStop")
+}
+
+model Route {
+  id                String   @id @default(uuid())
+  name              String
+  originId          String
+  destinationId     String
+  origin            Location @relation("RouteOrigin", fields: [originId], references: [id])
+  destination       Location @relation("RouteDestination", fields: [destinationId], references: [id])
+  distanceKm        Float?
+  estimatedMinutes  Int?
+  stops             RouteStop[]
+  trips             Trip[]
+  createdAt         DateTime @default(now())
+}
+
+model RouteStop {
+  id          String   @id @default(uuid())
+  routeId     String
+  route       Route    @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  locationId  String
+  location   Location @relation(fields: [locationId], references: [id])
+  stopOrder   Int
+  createdAt   DateTime @default(now())
+  @@unique([routeId, stopOrder])
+}
+
+
+model ServiceCategory {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  trips       Trip[]
+  createdAt   DateTime @default(now())
+}
+
+
+model Trip {
+  id                  String   @id @default(uuid())
+  driverId            String
+  driver              DriverProfile @relation(fields: [driverId], references: [id])
+  vehicleId           String
+  vehicle             Vehicle  @relation(fields: [vehicleId], references: [id])
+  routeId             String?
+  route               Route?   @relation(fields: [routeId], references: [id])
+  categoryId          String?
+  category            ServiceCategory? @relation(fields: [categoryId], references: [id])
+  customOrigin        String?
+  customDestination   String?
+  departureDate       DateTime
+  departureTime       DateTime
+  publishedSeats      Int
+  pricePerSeat        Decimal  @db.Decimal(10,2)
+  meetingPoint        String?
+  notes               String?
+  autoConfirmBookings Boolean @default(false)
+  status              TripStatus @default(DRAFT)
+  bookings            Booking[]
+  stops               TripStop[]
+  locations           DriverLocation[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  @@index([departureDate, status])
+}
+
+model TripStop {
+  id          String   @id @default(uuid())
+  tripId      String
+  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  locationId  String
+  location    Location @relation(fields: [locationId], references: [id])
+  stopOrder   Int
+  createdAt   DateTime @default(now())
+  @@unique([tripId, stopOrder])
+}
+
+
+model Booking {
+  id              String   @id @default(uuid())
+  tripId          String
+  trip            Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  passengerId     String
+  passenger       User     @relation(fields: [passengerId], references: [id])
+  seats           Int      @default(1)
+  pickupStopId    String
+  pickupStop      Location @relation("PickupStop", fields: [pickupStopId], references: [id])
+  dropoffStopId   String
+  dropoffStop     Location @relation("DropoffStop", fields: [dropoffStopId], references: [id])
+  price           Decimal  @db.Decimal(10,2)
+  status          BookingStatus @default(PENDING)
+  payment         Payment?
+  chat            Conversation?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  rating Rating[]
+  complaint Complaint[]
+  userReport UserReport[]
+  @@index([tripId, status])
+}
+
+model Payment {
+  id              String   @id @default(uuid())
+  bookingId       String   @unique
+  booking         Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  amount          Decimal  @db.Decimal(10,2)
+  method          String
+  transactionId   String?
+  status          PaymentStatus @default(PENDING)
+  paidAt          DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model DriverLocation {
+  id          String   @id @default(uuid())
+  tripId      String
+  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  latitude    Float
+  longitude   Float
+  heading     Float?
+  speed       Float?
+  createdAt   DateTime @default(now())
+  @@index([tripId, createdAt])
+}
+
+
+model Conversation {
+  id          String   @id @default(uuid())
+  bookingId   String   @unique
+  booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  messages    Message[]
+  createdAt   DateTime @default(now())
+}
+
+model Message {
+  id              String   @id @default(uuid())
+  conversationId  String
+  conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId        String
+  sender          User     @relation(fields: [senderId], references: [id])
+  content         String
+  status          MessageStatus @default(SENT)
+  createdAt       DateTime @default(now())
+}
+
+model OTPCode {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code        String
+  expiresAt   DateTime
+  used        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  message     String
+  type        NotificationType
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+
 model Rating {
- id String @id @default(uuid())
- tripId String
- trip Trip @relation(fields:[tripId],references:[id])
- fromUserId String
- fromUser User @relation("GivenRatings", fields:[fromUserId],references:[id])
- toUserId String
- toUser User @relation("ReceivedRatings" , fields:[toUserId],references:[id])
- target RatingTarget
- stars Int
- comment String?
- createdAt DateTime @default(now())
+  id              String   @id @default(uuid())
+  bookingId       String
+  booking         Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  fromUserId      String
+  fromUser        User     @relation("GivenRatings", fields: [fromUserId], references: [id])
+  toUserId        String
+  toUser          User     @relation("ReceivedRatings", fields: [toUserId], references: [id])
+  target          RatingTarget
+  stars           Int
+  comment         String?
+  createdAt       DateTime @default(now())
+  @@unique([bookingId, fromUserId])
+}
+
+model Complaint {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  bookingId       String?
+  booking         Booking? @relation(fields: [bookingId], references: [id])
+  category        String
+  description     String
+  status          ComplaintStatus @default(OPEN)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model UserReport {
+  id              String   @id @default(uuid())
+  reporterId      String
+  reporter        User     @relation("Reporter", fields: [reporterId], references: [id])
+  reportedUserId  String
+  reportedUser    User     @relation("Reported", fields: [reportedUserId], references: [id])
+  bookingId       String?
+  booking         Booking? @relation(fields: [bookingId], references: [id])
+  target          ReportTarget
+  reason          String
+  createdAt       DateTime @default(now())
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  userId      String?
+  action      String
+  entity      String
+  entityId    String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  @@index([entity, entityId])
 }
