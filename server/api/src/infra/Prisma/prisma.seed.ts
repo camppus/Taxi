@@ -56,22 +56,18 @@ export default async function run() {
 
   if (hasAdmin) {
     console.log("ADMIN ALREADY EXIST");
-
     return;
   }
 
-  const passwordHashed = await hasher.hash(password);
-
-  await db.user.create({
-    data: {
-      bi: "123456789LA001",
-      email,
-      password: passwordHashed,
-      name: "ADMIN USER",
-      phone: "923456789",
+  await db.user.upsert({
+    where: { phone: "+244900000000" },
+    update: {},
+    create: {
+      fullName: "Administrador",
+      phone: "+244900000000",
       role: "ADMIN",
-      image: "https://app.utmify.com.br/user",
-      isActive: true,
+      status: "ACTIVE",
+      gender: "MALE",
     },
   });
 

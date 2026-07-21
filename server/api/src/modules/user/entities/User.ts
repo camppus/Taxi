@@ -1,3 +1,5 @@
+import { Gender } from "@prisma/client";
+
 export enum Role {
   ADMIN = "ADMIN",
   DRIVER = "DRIVER",
@@ -13,14 +15,18 @@ export enum UserStatus {
 
 export interface User {
   id: string;
-  name: string;
-  email?: string;
+  fullName: string;
   phone: string;
   password: string;
   role: Role;
   status: UserStatus;
   createdAt: Date;
   updatedAt: Date;
+  gender: Gender;
+  birthDate?: Date;
+  photoUrl?: string;
+  emergencyPhone?: string;
+  selfieUrl?: string;
 }
 
 export interface UserResponse extends Omit<User, "password"> {}

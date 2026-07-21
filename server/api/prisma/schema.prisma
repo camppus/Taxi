@@ -39,8 +39,6 @@ enum VehicleStatus {
   PENDING
   APPROVED
   REJECTED
-  SUSPENDED
-  INACTIVE
 }
 
 enum TripStatus {
@@ -105,6 +103,24 @@ enum ReportTarget {
   PASSENGER
 }
 
+enum DriverDocumentType {
+  ID_CARD
+  DRIVER_LICENSE
+  SELFIE
+  PROFILE_PHOTO
+  POLICE_RECORD
+  MEDICAL_CERTIFICATE
+}
+
+
+enum DriverStatus {
+  ONLINE
+  OFFLINE
+  SUSPENDED
+  INACTIVE
+}
+
+
 
 model User {
   id          String      @id @default(uuid())
@@ -112,8 +128,8 @@ model User {
   role        Role        @default(PASSENGER)
   status      UserStatus  @default(PENDING)
   fullName        String
-  gender          Gender?
-  birthDate       DateTime?
+  gender          Gender
+  birthDate       DateTime
   photoUrl        String?
   emergencyPhone  String?
   driver      DriverProfile?
@@ -135,11 +151,14 @@ model DriverProfile {
   userId            String   @unique
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   requestStatus     DriverRequestStatus @default(PENDING)
-  identityNumber    String?
-  licenseNumber     String?
-  licenseExpiry     DateTime?
-  selfieUrl         String?
   rejectionReason   String?
+  approvedAt        DateTime?
+  approvedBy        String?
+  licenseCategory   String?
+  identityNumber    String? @unique
+  licenseNumber     String @unique
+  licenseExpiry     DateTime?
+  status            DriverStatus @default(OFFLINE)
   vehicles          Vehicle[]
   documents         DriverDocument[]
   trips             Trip[]
@@ -148,14 +167,16 @@ model DriverProfile {
 }
 
 model DriverDocument {
-  id          String   @id @default(uuid())
+  id          String @id @default(uuid())
   driverId    String
-  driver      DriverProfile @relation(fields: [driverId], references: [id], onDelete: Cascade)
-  type        String
+  driver      DriverProfile @relation(fields:[driverId],references:[id],onDelete:Cascade)
+  type        DriverDocumentType
   fileUrl     String
   verified    Boolean @default(false)
+  verifiedAt  DateTime?
   expiresAt   DateTime?
   createdAt   DateTime @default(now())
+  @@unique([driverId,type])
 }
 
 model Vehicle {
@@ -189,8 +210,8 @@ model VehicleDocument {
   fileUrl     String
   verified    Boolean @default(false)
   expiresAt   DateTime?
-
   createdAt   DateTime @default(now())
+  @@unique([vehicleId,type])
 }
 
 
@@ -199,87 +220,59 @@ model Location {
   name        String
   latitude    Float
   longitude   Float
-  createdAt   DateTime @default(now()) 
-  routeOrigins      Route[] @relation("RouteOrigin")
-  routeDestinations Route[] @relation("RouteDestination")
-  routeStops  RouteStop[]
-  tripStops   TripStop[]
-  pickupBookings  Booking[] @relation("PickupStop")
+  tripOrigins Trip[] @relation("TripOrigin")
+  tripDestinations Trip[] @relation("TripDestination")
+  tripStops TripStop[]
+  pickupBookings Booking[] @relation("PickupStop")
   dropoffBookings Booking[] @relation("DropoffStop")
-}
-
-model Route {
-  id                String   @id @default(uuid())
-  name              String
-  originId          String
-  destinationId     String
-  origin            Location @relation("RouteOrigin", fields: [originId], references: [id])
-  destination       Location @relation("RouteDestination", fields: [destinationId], references: [id])
-  distanceKm        Float?
-  estimatedMinutes  Int?
-  stops             RouteStop[]
-  trips             Trip[]
-  createdAt         DateTime @default(now())
-}
-
-model RouteStop {
-  id          String   @id @default(uuid())
-  routeId     String
-  route       Route    @relation(fields: [routeId], references: [id], onDelete: Cascade)
-  locationId  String
-  location   Location @relation(fields: [locationId], references: [id])
-  stopOrder   Int
-  createdAt   DateTime @default(now())
-  @@unique([routeId, stopOrder])
-}
-
-
-model ServiceCategory {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  trips       Trip[]
-  createdAt   DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 
 model Trip {
-  id                  String   @id @default(uuid())
-  driverId            String
-  driver              DriverProfile @relation(fields: [driverId], references: [id])
-  vehicleId           String
-  vehicle             Vehicle  @relation(fields: [vehicleId], references: [id])
-  routeId             String?
-  route               Route?   @relation(fields: [routeId], references: [id])
-  categoryId          String?
-  category            ServiceCategory? @relation(fields: [categoryId], references: [id])
-  customOrigin        String?
-  customDestination   String?
-  departureDate       DateTime
-  departureTime       DateTime
-  publishedSeats      Int
-  pricePerSeat        Decimal  @db.Decimal(10,2)
-  meetingPoint        String?
-  notes               String?
-  autoConfirmBookings Boolean @default(false)
-  status              TripStatus @default(DRAFT)
-  bookings            Booking[]
-  stops               TripStop[]
-  locations           DriverLocation[]
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  @@index([departureDate, status])
+  id String @id @default(uuid())
+  driverId String
+  driver DriverProfile @relation(fields:[driverId],references:[id])
+  vehicleId String
+  vehicle Vehicle @relation(fields:[vehicleId],references:[id])
+  name String?
+  originId String
+  origin Location @relation("TripOrigin",fields:[originId],references:[id])
+  destinationId String
+  destination Location @relation("TripDestination",fields:[destinationId],references:[id])
+  distanceKm Float?
+  estimatedMinutes Int?
+  departureDate DateTime
+  departureTime DateTime
+  publishedSeats Int
+  priceBase Decimal @db.Decimal(10,2)
+  status TripStatus @default(DRAFT)
+  stops TripStop[]
+  bookings Booking[]
+  locations DriverLocation[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([departureDate,status])
+
+}
+
+enum StopType {
+  START
+  STOP
+  END
 }
 
 model TripStop {
-  id          String   @id @default(uuid())
-  tripId      String
-  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  locationId  String
-  location    Location @relation(fields: [locationId], references: [id])
-  stopOrder   Int
-  createdAt   DateTime @default(now())
-  @@unique([tripId, stopOrder])
+  id String @id @default(uuid())
+  tripId String
+  trip Trip @relation(fields:[tripId],references:[id],onDelete:Cascade)
+  locationId String
+  location Location @relation(fields:[locationId],references:[id])
+  order Int
+  type StopType @default(STOP)
+  distanceFromStart Float?
+  createdAt DateTime @default(now())
+  @@unique([tripId,order])
 }
 
 
@@ -412,15 +405,4 @@ model UserReport {
   target          ReportTarget
   reason          String
   createdAt       DateTime @default(now())
-}
-
-model ActivityLog {
-  id          String   @id @default(uuid())
-  userId      String?
-  action      String
-  entity      String
-  entityId    String?
-  metadata    Json?
-  createdAt   DateTime @default(now())
-  @@index([entity, entityId])
 }

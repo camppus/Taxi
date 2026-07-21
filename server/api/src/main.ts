@@ -7,7 +7,6 @@ import helmet from "helmet";
 import compression from "compression";
 import { GlobalExceptionFilter } from "./infra/http/ExeptionFilter";
 import cookieParser from "cookie-parser";
-import { AuditInterceptor } from "./modules/auditories/presenter/http/AuditInterceptor";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -63,7 +62,6 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(new GlobalExceptionFilter());
-  app.useGlobalInterceptors(app.get(AuditInterceptor));
   app.enableShutdownHooks();
   const port = process.env.PORT ?? 8080;
   await app.listen(port, "localhost");
