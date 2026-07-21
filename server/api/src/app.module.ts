@@ -11,6 +11,7 @@ import UserModule from "./modules/user/userModule";
 import { SmsModule } from "./infra/Sms/sms.module";
 import { DriverModule } from "./modules/driver/driverModule";
 import { VehicleModule } from "./modules/vehicle/VehicleModule";
+import { LocationModule } from "./modules/location/LocationModule";
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { VehicleModule } from "./modules/vehicle/VehicleModule";
     UserModule,
     SmsModule,
     DriverModule,
+    LocationModule,
     VehicleModule,
   ],
 })

@@ -220,12 +220,22 @@ model Location {
   name        String
   latitude    Float
   longitude   Float
+  description String?
+  accuracy    Float?
+  formattedAddress String?
+  externalId String?
+  street      String
+  neighborhood String
+  city        String
+  province    String
+  country     String @default("Angola")
   tripOrigins Trip[] @relation("TripOrigin")
   tripDestinations Trip[] @relation("TripDestination")
   tripStops TripStop[]
-  pickupBookings Booking[] @relation("PickupStop")
-  dropoffBookings Booking[] @relation("DropoffStop")
   createdAt DateTime @default(now())
+  @@index([latitude, longitude])
+  @@index([city])
+  @@index([neighborhood])
 }
 
 
@@ -257,24 +267,24 @@ model Trip {
 }
 
 enum StopType {
-  START
-  STOP
-  END
+  PICK
+  DROP
 }
 
 model TripStop {
   id String @id @default(uuid())
   tripId String
+  bookingId String
+  booking Booking @relation(fields: [bookingId] , references: [id] , onDelete:Cascade)
   trip Trip @relation(fields:[tripId],references:[id],onDelete:Cascade)
   locationId String
   location Location @relation(fields:[locationId],references:[id])
   order Int
-  type StopType @default(STOP)
+  type StopType 
   distanceFromStart Float?
   createdAt DateTime @default(now())
   @@unique([tripId,order])
 }
-
 
 model Booking {
   id              String   @id @default(uuid())
@@ -283,10 +293,6 @@ model Booking {
   passengerId     String
   passenger       User     @relation(fields: [passengerId], references: [id])
   seats           Int      @default(1)
-  pickupStopId    String
-  pickupStop      Location @relation("PickupStop", fields: [pickupStopId], references: [id])
-  dropoffStopId   String
-  dropoffStop     Location @relation("DropoffStop", fields: [dropoffStopId], references: [id])
   price           Decimal  @db.Decimal(10,2)
   status          BookingStatus @default(PENDING)
   payment         Payment?
@@ -296,6 +302,7 @@ model Booking {
   rating Rating[]
   complaint Complaint[]
   userReport UserReport[]
+  tripStop TripStop[]
   @@index([tripId, status])
 }
 
