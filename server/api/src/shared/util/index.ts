@@ -1,28 +1,4 @@
-import SENSITIVE_FIELDS from "../constants/SENSITIVE_FIELDS";
 import { randomBytes } from "node:crypto";
-
-export function sanitize(data: any): any {
-  if (Array.isArray(data)) {
-    return data.map(sanitize);
-  }
-
-  if (data && typeof data === "object") {
-    return Object.entries(data).reduce(
-      (acc, [key, value]) => {
-        if (SENSITIVE_FIELDS.has(key)) {
-          acc[key] = "<hidden>";
-        } else {
-          acc[key] = sanitize(value);
-        }
-
-        return acc;
-      },
-      {} as Record<string, unknown>,
-    );
-  }
-
-  return data;
-}
 
 export function generateTempPassword(prefix = "TMP") {
   const chars = "  ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -52,4 +28,28 @@ export function transformPrismaSchema(dmmf: any) {
       })),
     })),
   };
+}
+
+export function calculateDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+): number {
+  const earthRadiusKm = 6371;
+
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return earthRadiusKm * c;
 }

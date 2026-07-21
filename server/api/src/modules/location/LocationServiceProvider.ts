@@ -3,8 +3,8 @@ export interface LocationServiceProvider {
     latitude: number,
     longitude: number,
   ): Promise<LocationResponse>;
+  geocode(query: string): Promise<LocationResponse>;
 }
-
 
 export interface LocationResponse {
   name: string;

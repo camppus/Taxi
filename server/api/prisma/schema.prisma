@@ -253,7 +253,6 @@ model Trip {
   distanceKm Float?
   estimatedMinutes Int?
   departureDate DateTime
-  departureTime DateTime
   publishedSeats Int
   priceBase Decimal @db.Decimal(10,2)
   status TripStatus @default(DRAFT)
@@ -263,7 +262,7 @@ model Trip {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@index([departureDate,status])
-
+  
 }
 
 enum StopType {
