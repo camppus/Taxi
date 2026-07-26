@@ -5,13 +5,15 @@ import { ConfigModule } from "@nestjs/config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { PrometheusModule } from "@willsoto/nestjs-prometheus";
 import PrismaModule from "./infra/Prisma/prisma.service";
-import { RedisModule } from "./infra/Redis/redis.module";
 import SecurityModule from "./infra/security/security.module";
 import UserModule from "./modules/user/userModule";
 import { SmsModule } from "./infra/Sms/sms.module";
 import { DriverModule } from "./modules/driver/driverModule";
 import { VehicleModule } from "./modules/vehicle/VehicleModule";
 import { LocationModule } from "./modules/location/LocationModule";
+import { TripModule } from "./modules/trip/TripModule";
+import { NotificationModule } from "./modules/notification/NotificationModule";
+import { ReportModule } from "./modules/report/ReportModule";
 
 @Module({
   imports: [
@@ -38,13 +40,15 @@ import { LocationModule } from "./modules/location/LocationModule";
     ScheduleModule.forRoot(),
     PrometheusModule.register(),
     PrismaModule,
-    RedisModule,
     SecurityModule,
     UserModule,
     SmsModule,
     DriverModule,
     LocationModule,
     VehicleModule,
+    TripModule,
+    NotificationModule,
+    ReportModule,
   ],
 })
 export class AppModule {

@@ -186,7 +186,7 @@ export default class SearchTripUseCase implements UseCase<
 
     return {
       location,
-      data: trips,
+      data: trips as any,
       page,
       limit,
       total,

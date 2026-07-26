@@ -1,0 +1,2065 @@
+{
+  "models": [
+    {
+      "name": "User",
+      "table": "User",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "phone",
+          "type": "String",
+          "isId": false,
+          "isUnique": true,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "role",
+          "type": "Role",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "status",
+          "type": "UserStatus",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "fullName",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "gender",
+          "type": "Gender",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "birthDate",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "photoUrl",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "emergencyPhone",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "driver",
+          "type": "DriverProfile",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "bookings",
+          "type": "Booking",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "notifications",
+          "type": "Notification",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "otpCodes",
+          "type": "OTPCode",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "messages",
+          "type": "Message",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "complaint",
+          "type": "Complaint",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "givenRatings",
+          "type": "Rating",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "receivedRatings",
+          "type": "Rating",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "reportsMade",
+          "type": "UserReport",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "reportsReceived",
+          "type": "UserReport",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "DriverProfile",
+      "table": "DriverProfile",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "isId": false,
+          "isUnique": true,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "requestStatus",
+          "type": "DriverRequestStatus",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "rejectionReason",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "approvedAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "approvedBy",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "licenseCategory",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "identityNumber",
+          "type": "String",
+          "isId": false,
+          "isUnique": true,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "licenseNumber",
+          "type": "String",
+          "isId": false,
+          "isUnique": true,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "licenseExpiry",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "status",
+          "type": "DriverStatus",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "vehicles",
+          "type": "Vehicle",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "documents",
+          "type": "DriverDocument",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "trips",
+          "type": "Trip",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "DriverDocument",
+      "table": "DriverDocument",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "driverId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "driver",
+          "type": "DriverProfile",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "type",
+          "type": "DriverDocumentType",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "fileUrl",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "verified",
+          "type": "Boolean",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "verifiedAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "Vehicle",
+      "table": "Vehicle",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "driverId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "capacity",
+          "type": "Int",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "driver",
+          "type": "DriverProfile",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "vehicleTypeId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "brand",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "model",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "year",
+          "type": "Int",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "color",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "plateNumber",
+          "type": "String",
+          "isId": false,
+          "isUnique": true,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "totalSeats",
+          "type": "Int",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "passengerSeats",
+          "type": "Int",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "status",
+          "type": "VehicleStatus",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "rejectionReason",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "documents",
+          "type": "VehicleDocument",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "trips",
+          "type": "Trip",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "VehicleDocument",
+      "table": "VehicleDocument",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "vehicleId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "vehicle",
+          "type": "Vehicle",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "type",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "fileUrl",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "verified",
+          "type": "Boolean",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "Location",
+      "table": "Location",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "latitude",
+          "type": "Float",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "longitude",
+          "type": "Float",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "accuracy",
+          "type": "Float",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "formattedAddress",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "externalId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "street",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "neighborhood",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "province",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "country",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "tripOrigins",
+          "type": "Trip",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "tripDestinations",
+          "type": "Trip",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "tripStops",
+          "type": "TripStop",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "Trip",
+      "table": "Trip",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "driverId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "driver",
+          "type": "DriverProfile",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "vehicleId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "vehicle",
+          "type": "Vehicle",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "originId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "origin",
+          "type": "Location",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "destinationId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "destination",
+          "type": "Location",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "distanceKm",
+          "type": "Float",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "estimatedMinutes",
+          "type": "Int",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "departureDate",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "publishedSeats",
+          "type": "Int",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "priceBase",
+          "type": "Decimal",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "status",
+          "type": "TripStatus",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "stops",
+          "type": "TripStop",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "bookings",
+          "type": "Booking",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "locations",
+          "type": "DriverLocation",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "TripStop",
+      "table": "TripStop",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "tripId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "bookingId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "booking",
+          "type": "Booking",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "trip",
+          "type": "Trip",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "locationId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "location",
+          "type": "Location",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "type",
+          "type": "StopType",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "distanceFromStart",
+          "type": "Float",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "Booking",
+      "table": "Booking",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "tripId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "trip",
+          "type": "Trip",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "passengerId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "passenger",
+          "type": "User",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "seats",
+          "type": "Int",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "price",
+          "type": "Decimal",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "status",
+          "type": "BookingStatus",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "payment",
+          "type": "Payment",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "chat",
+          "type": "Conversation",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "rating",
+          "type": "Rating",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "complaint",
+          "type": "Complaint",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "userReport",
+          "type": "UserReport",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "tripStop",
+          "type": "TripStop",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "table": "Payment",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "bookingId",
+          "type": "String",
+          "isId": false,
+          "isUnique": true,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "booking",
+          "type": "Booking",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "amount",
+          "type": "Decimal",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "method",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "transactionId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "status",
+          "type": "PaymentStatus",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "paidAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "DriverLocation",
+      "table": "DriverLocation",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "tripId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "trip",
+          "type": "Trip",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "latitude",
+          "type": "Float",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "longitude",
+          "type": "Float",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "heading",
+          "type": "Float",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "speed",
+          "type": "Float",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "Conversation",
+      "table": "Conversation",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "bookingId",
+          "type": "String",
+          "isId": false,
+          "isUnique": true,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "booking",
+          "type": "Booking",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "messages",
+          "type": "Message",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": true,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "Message",
+      "table": "Message",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "conversationId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "conversation",
+          "type": "Conversation",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "senderId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "sender",
+          "type": "User",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "content",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "status",
+          "type": "MessageStatus",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "OTPCode",
+      "table": "OTPCode",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "used",
+          "type": "Boolean",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "Notification",
+      "table": "Notification",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "message",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "type",
+          "type": "NotificationType",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "read",
+          "type": "Boolean",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "Rating",
+      "table": "Rating",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "bookingId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "booking",
+          "type": "Booking",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "fromUserId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "fromUser",
+          "type": "User",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "toUserId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "toUser",
+          "type": "User",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "target",
+          "type": "RatingTarget",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "stars",
+          "type": "Int",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "comment",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "Complaint",
+      "table": "Complaint",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "bookingId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "booking",
+          "type": "Booking",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "category",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "status",
+          "type": "ComplaintStatus",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    },
+    {
+      "name": "UserReport",
+      "table": "UserReport",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "isId": true,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "reporterId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "reporter",
+          "type": "User",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "reportedUserId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "reportedUser",
+          "type": "User",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "bookingId",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "booking",
+          "type": "Booking",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": false,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "target",
+          "type": "ReportTarget",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "isId": false,
+          "isUnique": false,
+          "isRequired": true,
+          "isList": false,
+          "relation": null
+        }
+      ]
+    }
+  ]
+}

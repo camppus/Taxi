@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsEnum, IsOptional, IsDateString } from "class-validator";
 
 export enum DriverDocumentType {
@@ -16,12 +17,15 @@ export enum DriverDocumentType {
 
 export class CreateDriverDocumentDto {
   @IsEnum(DriverDocumentType)
+  @ApiProperty()
   type!: DriverDocumentType;
 
   @IsString()
+  @ApiProperty()
   fileUrl!: string;
 
   @IsOptional()
   @IsDateString()
+  @ApiProperty()
   expiresAt?: string;
 }

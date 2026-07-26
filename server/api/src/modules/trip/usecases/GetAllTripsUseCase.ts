@@ -79,4 +79,42 @@ export default class GetAllTripsUseCase implements UseCase<
       totalPages: Math.ceil(total / data.limit),
     };
   }
+
+  async getById(id: string) {
+    const trip = await this.prisma.trip.findFirst({
+      where: { id },
+      include: {
+        driver: {
+          include: {
+            user: true,
+          },
+        },
+        bookings: {
+          include: {
+            rating: true,
+            tripStop: {
+              include: {
+                location: {
+                  include: {
+                    tripDestinations: true,
+                    tripOrigins: true,
+                  },
+                },
+              },
+            },
+            Report: true,
+            payment: true,
+          },
+        },
+        destination: true,
+        origin: true,
+        vehicle: true,
+        stops: true,
+      },
+    });
+
+    return {
+      data: trip,
+    };
+  }
 }

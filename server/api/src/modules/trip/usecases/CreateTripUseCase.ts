@@ -28,6 +28,22 @@ export default class CreateTripUseCase implements UseCase<
       },
     });
 
+    if (
+      !data.originLat ||
+      !data.originLog ||
+      !data.destinationLat ||
+      !data.destinationLog
+    ) {
+      throw new Error("Coordenadas de origem e destino são obrigatórias");
+    }
+
+    if (
+      data.originLat === data.destinationLat &&
+      data.originLog === data.destinationLog
+    ) {
+      throw new Error("Origem e destino não podem ser iguais");
+    }
+
     if (!driver) {
       throw new Error("Usuário não possui perfil de motorista");
     }
@@ -66,15 +82,17 @@ export default class CreateTripUseCase implements UseCase<
       throw new Error("Quantidade de lugares excede a capacidade do veículo");
     }
 
-    const origin = await this.createLocation.execute({
-      latitude: data.originLat,
-      longitude: data.originLog,
-    });
+    const [origin, destination] = await Promise.all([
+      this.createLocation.execute({
+        latitude: data.originLat,
+        longitude: data.originLog,
+      }),
 
-    const destination = await this.createLocation.execute({
-      latitude: data.destinationLat,
-      longitude: data.destinationLog,
-    });
+      this.createLocation.execute({
+        latitude: data.destinationLat,
+        longitude: data.destinationLog,
+      }),
+    ]);
 
     const distanceKm = calculateDistance(
       origin.latitude,
@@ -82,6 +100,10 @@ export default class CreateTripUseCase implements UseCase<
       destination.latitude,
       destination.longitude,
     );
+
+    if (distanceKm < 1) {
+      throw new Error("A distância da viagem é inválida");
+    }
 
     const trip = await this.prisma.trip.create({
       data: {

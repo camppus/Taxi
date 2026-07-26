@@ -68,6 +68,7 @@ export default async function run() {
       role: "ADMIN",
       status: "ACTIVE",
       gender: "MALE",
+      birthDate: new Date(),
     },
   });
 

@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsOptional, IsString } from "class-validator";
 
 export enum VehicleStatusDto {
@@ -6,10 +7,12 @@ export enum VehicleStatusDto {
 }
 
 export class ToggleVehicleStatusDto {
+  @ApiProperty()
   @IsEnum(VehicleStatusDto)
   status!: VehicleStatusDto;
 
   @IsOptional()
   @IsString()
+  @ApiProperty()
   reason?: string;
 }

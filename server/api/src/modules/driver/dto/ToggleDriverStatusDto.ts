@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum } from "class-validator";
 
 export enum DriverStatus {
@@ -12,5 +13,6 @@ export enum DriverStatus {
 
 export class ToggleDriverStatusDto {
   @IsEnum(DriverStatus)
+    @ApiProperty()
   status!: DriverStatus;
 }

@@ -137,14 +137,30 @@ model User {
   notifications Notification[]
   otpCodes    OTPCode[]
   messages Message[]
-  complaint Complaint[]
   createdAt   DateTime @default(now())
+  location UserLocation?
   updatedAt   DateTime @updatedAt
   givenRatings    Rating[] @relation("GivenRatings")
   receivedRatings Rating[] @relation("ReceivedRatings")
-  reportsMade     UserReport[] @relation("Reporter")
-  reportsReceived UserReport[] @relation("Reported")
+  reportsMade     Report[] @relation("Reporter")
+  reportsReceived Report[] @relation("Reported")
 }
+
+
+
+model UserLocation {
+  id          String   @id @default(uuid())
+  userId String @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  latitude    Float
+  longitude   Float
+  heading     Float?
+  speed       Float?
+  metadata Json?
+  createdAt   DateTime @default(now())
+  @@index([userId, createdAt])
+}
+
 
 model DriverProfile {
   id                String   @id @default(uuid())
@@ -258,7 +274,6 @@ model Trip {
   status TripStatus @default(DRAFT)
   stops TripStop[]
   bookings Booking[]
-  locations DriverLocation[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@index([departureDate,status])
@@ -299,8 +314,7 @@ model Booking {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   rating Rating[]
-  complaint Complaint[]
-  userReport UserReport[]
+  Report Report[]
   tripStop TripStop[]
   @@index([tripId, status])
 }
@@ -316,18 +330,6 @@ model Payment {
   paidAt          DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-}
-
-model DriverLocation {
-  id          String   @id @default(uuid())
-  tripId      String
-  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  latitude    Float
-  longitude   Float
-  heading     Float?
-  speed       Float?
-  createdAt   DateTime @default(now())
-  @@index([tripId, createdAt])
 }
 
 
@@ -387,28 +389,39 @@ model Rating {
   @@unique([bookingId, fromUserId])
 }
 
-model Complaint {
-  id              String   @id @default(uuid())
-  userId          String
-  user            User     @relation(fields: [userId], references: [id])
-  bookingId       String?
-  booking         Booking? @relation(fields: [bookingId], references: [id])
-  category        String
-  description     String
-  status          ComplaintStatus @default(OPEN)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+model Report {
+  id String @id @default(uuid())
+  reporterId String
+  reporter User @relation("Reporter",fields:[reporterId],references:[id],onDelete:Cascade)
+  targetUserId String
+  targetUser User @relation("Reported",fields:[targetUserId],references:[id])
+  bookingId String
+  booking Booking @relation(fields:[bookingId],references:[id])
+  type ReportType
+  title String
+  description String
+  status ReportStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model UserReport {
-  id              String   @id @default(uuid())
-  reporterId      String
-  reporter        User     @relation("Reporter", fields: [reporterId], references: [id])
-  reportedUserId  String
-  reportedUser    User     @relation("Reported", fields: [reportedUserId], references: [id])
-  bookingId       String?
-  booking         Booking? @relation(fields: [bookingId], references: [id])
-  target          ReportTarget
-  reason          String
-  createdAt       DateTime @default(now())
+
+enum ReportType {
+  USER_BEHAVIOR
+  TRIP_PROBLEM
+  DRIVER_ISSUE
+  PASSENGER_ISSUE
+  VEHICLE_ISSUE
+  PAYMENT_ISSUE
+  FRAUD
+  SAFETY
+  OTHER
+}
+
+
+enum ReportStatus {
+  PENDING
+  REVIEWING
+  RESOLVED
+  REJECTED
 }
