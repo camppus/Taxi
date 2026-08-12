@@ -1,0 +1,6 @@
+allowBuilds:
+  unrs-resolver: true
+minimumReleaseAgeExclude:
+  - '@napi-rs/wasm-runtime@1.2.2'
+  - '@react-native/babel-plugin-codegen@0.86.2'
+  - '@react-native/codegen@0.86.2'

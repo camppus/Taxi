@@ -1,5 +1,38 @@
-import { Stack } from "expo-router";
+import AppHeader from "@/components/AppHeader";
+import BottomNavbar from "@/components/BottomNavbar";
+import { UserRole } from "@/types/User";
+import { Slot } from "expo-router";
+import { View, StyleSheet, StatusBar } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function RootLayout() {
-  return <Stack />;
+export default function TabsLayout() {
+  const userRole = UserRole.PASSAGER as UserRole;
+
+  return (
+    <SafeAreaView style={styles.safeArea} edges={["top"]}>
+      <View style={styles.container}>
+        <AppHeader />
+        <View style={styles.content}>
+          <Slot />
+        </View>
+
+        <BottomNavbar userRole={userRole} />
+      </View>
+    </SafeAreaView>
+  );
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+
+  container: {
+    flex: 1,
+  },
+
+  content: {
+    flex: 1,
+  },
+});

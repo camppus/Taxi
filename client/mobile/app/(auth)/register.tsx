@@ -1,6 +1,8 @@
+import BackButton from "@/components/BackButton";
 import Button from "@/components/Button";
 import DatePickerInput from "@/components/DatePickerInput";
 import Input from "@/components/Input";
+import Lable from "@/components/Label";
 import OTPInput from "@/components/OTPInput";
 import OTPKeyboard from "@/components/OTPKeyboard";
 import Timer from "@/components/Timer";
@@ -87,14 +89,6 @@ export default function Register() {
     router.back();
   }
 
-  function verifyOtp() {
-    if (otp === generatedOtp) {
-      Alert.alert("Sucesso", "Conta criada!");
-    } else {
-      Alert.alert("Erro", "Código inválido");
-    }
-  }
-
   useEffect(() => {
     translateY.value = withTiming(0, {
       duration: 800,
@@ -108,7 +102,11 @@ export default function Register() {
       }}
       behavior="padding"
     >
-      <StatusBar animated barStyle={"light-content"} translucent />
+      <StatusBar
+        animated
+        barStyle={step === 1 ? "light-content" : "dark-content"}
+        translucent
+      />
       <ScrollView
         ref={scrollRef}
         style={{
@@ -198,7 +196,7 @@ export default function Register() {
             </Text>
 
             <View style={{ gap: 6 }}>
-              <Text style={label}>Nome completo</Text>
+              <Lable title="Nome completo" />
               <Input
                 placeholder="Digite o seu nome"
                 value={form.fullName}
@@ -208,7 +206,7 @@ export default function Register() {
             </View>
 
             <View style={{ gap: 6 }}>
-              <Text style={label}>Telefone</Text>
+              <Lable title="Telefone" />
               <Input
                 placeholder="+244 9xx xxx xxx"
                 value={form.phone}
@@ -217,8 +215,7 @@ export default function Register() {
               />
             </View>
             <View style={{ gap: 6 }}>
-              <Text style={label}>Género</Text>
-
+              <Lable title="Género" />
               <View
                 style={{
                   flexDirection: "row",
@@ -247,7 +244,7 @@ export default function Register() {
               </View>
             </View>
             <View style={{ gap: 6 }}>
-              <Text style={label}>Data de nascimento</Text>
+              <Lable title="Data de nascimento" />
 
               <DatePickerInput
                 value={form.birthDate}
@@ -273,7 +270,7 @@ export default function Register() {
                 onPress={nextStep}
               />
 
-              <Button title="Voltar" variant="outlined" onPress={back} />
+              <BackButton />
             </View>
           </View>
         ) : (
@@ -302,7 +299,7 @@ export default function Register() {
                 lineHeight: 30,
               }}
             >
-              Por favor informe o código de verificado para{" "}
+              Por favor informe o código de verificação enviado para{" "}
               <Text
                 style={{
                   fontWeight: "800",
@@ -334,13 +331,7 @@ export default function Register() {
   );
 }
 
-const label = {
-  fontSize: 14,
-  fontWeight: "600" as const,
-  color: "#333",
-};
-
-const selectOption = {
+export const selectOption = {
   flex: 1,
   height: 54,
   borderWidth: 1,
@@ -350,7 +341,7 @@ const selectOption = {
   justifyContent: "center" as const,
 };
 
-const selectedOption = {
+export const selectedOption = {
   borderColor: "rgba(46, 204, 113, 0.1)",
   backgroundColor: "rgba(46, 204, 113, 0.1)",
 };

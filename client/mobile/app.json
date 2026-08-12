@@ -9,9 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "taxi.com"
     },
     "android": {
+      "package": "taxi.com",
       "adaptiveIcon": {
         "backgroundColor": "#0E1724",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -19,7 +21,12 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyATenFabDH-w0wBldj88-6dYY7zwMzxC9Y"
+        }
+      }
     },
     "web": {
       "output": "static",
@@ -29,7 +36,14 @@
     "plugins": [
       "expo-router",
       "expo-font",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      [
+        "expo-maps",
+        {
+          "requestLocationPermission": true,
+          "locationPermission": "Permitir TáxiPlus obter sua localização?"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
