@@ -41,7 +41,7 @@
         "expo-maps",
         {
           "requestLocationPermission": true,
-          "locationPermission": "Permitir TáxiPlus obter sua localização?"
+          "locationPermission": "Allow $(PRODUCT_NAME) to use your location"
         }
       ]
     ],

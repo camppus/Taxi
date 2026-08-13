@@ -12,21 +12,21 @@ const tabs = [
   },
   {
     name: "Viagens",
-    route: "/viagens",
-    icon: "navigate-outline",
-    activeIcon: "navigate",
-  },
-  {
-    name: "Reservas",
     route: "/bookings",
     icon: "car-outline",
-    activeIcon: "car",
+    activeIcon: "navigate",
   },
   {
     name: "Carteiras",
     route: "/carteiras",
     icon: "wallet-outline",
     activeIcon: "wallet",
+  },
+  {
+    name: "Perfil",
+    route: "/profile",
+    icon: "person-outline",
+    activeIcon: "profile",
   },
 ] as const;
 
@@ -52,7 +52,7 @@ export default function BottomNavbar({ userRole }: { userRole: UserRole }) {
               <Ionicons
                 name={(active ? tab.activeIcon : tab.icon) as any}
                 size={24}
-                color={active ? "#ffffff" : "#999999"}
+                color={active ? "#151519" : "#999999"}
               />
 
               <Text style={[styles.label, active && styles.activeLabel]}>
@@ -78,22 +78,24 @@ const styles = StyleSheet.create({
   navbar: {
     width: "92%",
     height: 82,
-    backgroundColor: "#151519",
+    backgroundColor: "#FFFFFF",
     borderRadius: 42,
 
     flexDirection: "row",
     alignItems: "center",
-
     paddingHorizontal: 8,
 
-    shadowColor: "#000",
+    // Android
+    elevation: 12,
+
+    // iOS
+    shadowColor: "#000000",
     shadowOffset: {
       width: 0,
       height: 6,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 15,
-    elevation: 10,
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
   },
 
   tab: {
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
   },
 
   activeLabel: {
-    color: "#ffffff",
-    fontWeight: "500",
+    color: "#151519",
+    fontWeight: "600",
   },
 });
