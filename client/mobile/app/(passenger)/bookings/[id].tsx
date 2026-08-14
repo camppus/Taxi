@@ -11,8 +11,13 @@ import {
 import colors from "@/styles/color";
 import { mockBookings } from "@/mocks/booking";
 import { Booking, BookingStatus } from "@/types/Bookings";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Loading } from "@/components/Loading";
+import { BookingFooter } from "@/components/BookingFooter";
+import { handleCall, openLink } from "@/util/lib";
+import { Coordinate } from "@/types/Coord";
+import RouteMap from "@/components/RouteMap";
+import { mockTrips } from "@/mocks/trip";
 
 const statusConfig: Record<
   BookingStatus,
@@ -77,8 +82,19 @@ export default function BookingDetails() {
   }>();
 
   const booking = mockBookings.find((item) => item.id === id);
-
+  const trip = mockTrips[0];
   const [loading, setLoading] = useState<boolean>(true);
+
+  const routeCoords: Coordinate[] = [
+    {
+      latitude: trip.originLat,
+      longitude: trip.originLog,
+    },
+    {
+      latitude: trip.destinationLat,
+      longitude: trip.destinationLog,
+    },
+  ];
 
   useEffect(() => {
     console.log("Loading inicial:", loading);
@@ -294,7 +310,12 @@ export default function BookingDetails() {
                 </Text>
               </View>
 
-              <TouchableOpacity style={styles.callButton}>
+              <TouchableOpacity
+                onPress={() => {
+                  handleCall(`${booking.trip.driver.user.phone}`);
+                }}
+                style={styles.callButton}
+              >
                 <Ionicons
                   name="call-outline"
                   size={19}
@@ -405,19 +426,36 @@ export default function BookingDetails() {
               </Text>
             </View>
 
-            <View style={{ height: 40 }} />
+            <RouteMap
+              from="Ponto de embarque"
+              to="Ponto de desembarque"
+              fromCoords={{
+                latitude: trip.originLat,
+                longitude: trip.originLog,
+              }}
+              toCoords={{
+                latitude: trip.destinationLat,
+                longitude: trip.destinationLog,
+              }}
+              routeCoords={routeCoords}
+              title="Rota da viagem"
+              subtitle={`${booking.trip.name} · ${booking.trip.departureDate}`}
+            />
 
-            <TouchableOpacity
-              style={styles.headerButton}
-              onPress={() => router.back()}
-            >
-              <Ionicons
-                name="arrow-back"
-                size={21}
-                color={colors.root.secondary}
-              />
-              <Text>Voltar</Text>
-            </TouchableOpacity>
+            <BookingFooter
+              status={booking.status}
+              onBack={() => {
+                router.back();
+              }}
+              onChat={() => {
+                router.push(`/(passenger)/conversation/${booking.id}`);
+              }}
+              onCall={() => {
+                handleCall(`${booking.trip.driver.user.phone}`);
+              }}
+            />
+
+            <View style={{ height: 100 }} />
           </ScrollView>
         </>
       )}
@@ -523,7 +561,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 3,
     marginBottom: 140,
-    marginTop : -20
+    marginTop: -20,
   },
 
   headerTitle: {
@@ -875,7 +913,7 @@ const styles = StyleSheet.create({
   },
 
   bookingMeta: {
-    marginTop: 25,
+    marginVertical: 25,
     padding: 15,
     borderRadius: 16,
     backgroundColor: "#F7F7F7",

@@ -25,9 +25,6 @@ type LocationCommandModalProps = {
 };
 
 const SEARCH_DEBOUNCE_MS = 400;
-const MIN_SEATS = 1;
-const MAX_SEATS = 6;
-
 export type PlaceSuggestion = {
   id: string;
   name: string;
@@ -41,9 +38,19 @@ const searchPlaces = async (query: string): Promise<PlaceSuggestion[]> => {
       ? query
       : `${query}, Luanda, Angola`;
 
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-      search,
-    )}&limit=6&addressdetails=1`;
+    const params = new URLSearchParams({
+      format: "jsonv2",
+      q: search,
+      addressdetails: "1",
+      extratags: "1",
+      namedetails: "1",
+      entrances: "1",
+      "accept-language": "pt,en",
+      countrycodes: "ao",
+      limit: "40",
+    });
+
+    const url = `https://nominatim.openstreetmap.org/search?${params.toString()}`;
 
     const response = await fetch(url, { headers: { "Accept-Language": "pt" } });
     const data = await response.json();

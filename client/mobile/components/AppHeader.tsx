@@ -30,17 +30,22 @@ const menuItems: MenuItem[] = [
   {
     label: "Minhas viagens",
     icon: "car-outline",
-    route: "/(passenger)/rides",
-  },
-  {
-    label: "Reservas",
-    icon: "calendar-outline",
     route: "/(passenger)/bookings",
   },
   {
-    label: "Carteira",
-    icon: "wallet-outline",
-    route: "/(passenger)/wallet",
+    label: "Conversas",
+    icon: "chatbubbles-outline",
+    route: "/(passenger)/conversation",
+  },
+  {
+    label: "Avaliações",
+    icon: "star-outline",
+    route: "/(passenger)/reviews",
+  },
+  {
+    label: "Reclamações",
+    icon: "alert-circle-outline",
+    route: "/(passenger)/complaints",
   },
   {
     label: "Perfil",
@@ -48,17 +53,11 @@ const menuItems: MenuItem[] = [
     route: "/(passenger)/profile",
   },
   {
-    label: "Configurações",
-    icon: "settings-outline",
-    route: "/settings",
-  },
-  {
     label: "Ajuda e suporte",
     icon: "help-circle-outline",
-    route: "/support",
+    route: "/(passenger)/help",
   },
 ];
-
 export default function AppHeader({ onMenuPress }: AppHeaderProps) {
   const router = useRouter();
 
@@ -247,7 +246,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 24,
+    paddingHorizontal: 18,
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#F5F5F5",
@@ -311,19 +310,8 @@ const styles = StyleSheet.create({
     backgroundColor: color.root.primary,
 
     zIndex: 30,
-
     paddingTop: 25,
     paddingHorizontal: 10,
-
-    elevation: 20,
-
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 18,
-    shadowOffset: {
-      width: -5,
-      height: 0,
-    },
   },
 
   menuHeader: {
@@ -335,7 +323,6 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 16,
-    backgroundColor: "#F0F2F2",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -368,11 +355,11 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: "#EEEEEE",
-    marginVertical: 22,
+    marginVertical: 12,
   },
 
   menuItems: {
-    gap: 5,
+    gap: 4,
   },
 
   menuItem: {
@@ -391,7 +378,6 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 12,
-    backgroundColor: "#F5F6F6",
     alignItems: "center",
     justifyContent: "center",
   },

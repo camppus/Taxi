@@ -191,7 +191,7 @@ function BookingCard({
 
         <View style={styles.driverInfo}>
           <Text style={styles.driverName}>
-            {booking.trip.driver.user.fullName}
+            {booking.trip.driver.fullName}
           </Text>
 
           <Text style={styles.vehicle}>
@@ -244,10 +244,7 @@ export default function BookingsPage() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log("Loading inicial:", loading);
-
     const timer = setTimeout(() => {
-      console.log("Terminou loading");
       setLoading(false);
     }, 2000);
 

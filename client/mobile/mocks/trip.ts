@@ -1,9 +1,11 @@
 import { Gender } from "@/types/Gender";
 import { Trips } from "@/types/Trips";
+import * as crypto from "expo-crypto";
 
 export const mockTrips: Trips[] = [
   {
     name: "Luanda → Talatona",
+    id: crypto.randomUUID(),
     originLat: -8.8383,
     originLog: 13.2344,
     destinationLat: -8.9172,
@@ -43,6 +45,7 @@ export const mockTrips: Trips[] = [
 
   {
     name: "Kilamba → Maianga",
+    id: crypto.randomUUID(),
     originLat: -9.0011,
     originLog: 13.2678,
     destinationLat: -8.8275,
@@ -82,6 +85,7 @@ export const mockTrips: Trips[] = [
 
   {
     name: "Viana → Benfica",
+    id: crypto.randomUUID(),
     originLat: -8.9021,
     originLog: 13.3712,
     destinationLat: -8.8976,
@@ -121,6 +125,7 @@ export const mockTrips: Trips[] = [
 
   {
     name: "Camama → Ilha de Luanda",
+    id: crypto.randomUUID(),
     originLat: -8.8824,
     originLog: 13.3058,
     destinationLat: -8.7907,
@@ -160,6 +165,7 @@ export const mockTrips: Trips[] = [
 
   {
     name: "Morro Bento → Patriota",
+    id: crypto.randomUUID(),
     originLat: -8.8546,
     originLog: 13.2024,
     destinationLat: -8.9067,

@@ -14,22 +14,21 @@ const tabs = [
     name: "Viagens",
     route: "/bookings",
     icon: "car-outline",
-    activeIcon: "navigate",
+    activeIcon: "car",
   },
   {
-    name: "Carteiras",
-    route: "/carteiras",
-    icon: "wallet-outline",
-    activeIcon: "wallet",
+    name: "Conversas",
+    route: "/conversation",
+    icon: "chatbox-outline",
+    activeIcon: "chatbox",
   },
   {
     name: "Perfil",
     route: "/profile",
     icon: "person-outline",
-    activeIcon: "profile",
+    activeIcon: "person",
   },
 ] as const;
-
 export default function BottomNavbar({ userRole }: { userRole: UserRole }) {
   const router = useRouter();
   const pathname = usePathname();

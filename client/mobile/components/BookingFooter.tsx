@@ -100,42 +100,19 @@ export function BookingFooter({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    alignItems: "center",
+    flexWrap: "wrap",
     gap: 8,
-
-    paddingHorizontal: 16,
     paddingTop: 12,
-    paddingBottom: 20,
-
-    backgroundColor: colors.root.primary,
-
-    borderTopWidth: 1,
-    borderTopColor: "#EEEEEE",
-
-    elevation: 12,
-
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    shadowOffset: {
-      width: 0,
-      height: -3,
-    },
   },
 
   actionButton: {
     height: 48,
-    minWidth: 48,
-
+    width: "48%",
     paddingHorizontal: 12,
-
     borderRadius: 14,
-
     backgroundColor: "#F3F4F4",
-
     alignItems: "center",
     justifyContent: "center",
-
     flexDirection: "row",
     gap: 6,
   },
@@ -148,15 +125,12 @@ const styles = StyleSheet.create({
 
   cancelButton: {
     height: 48,
+    width: "48%",
     paddingHorizontal: 12,
-
     borderRadius: 14,
-
     backgroundColor: "#FFF0F0",
-
     alignItems: "center",
     justifyContent: "center",
-
     flexDirection: "row",
     gap: 6,
   },
@@ -168,17 +142,13 @@ const styles = StyleSheet.create({
   },
 
   backButton: {
-    flex: 1,
-
     height: 48,
-
+    width: "48%",
+    paddingHorizontal: 12,
     borderRadius: 14,
-
     backgroundColor: colors.root.secondary,
-
     alignItems: "center",
     justifyContent: "center",
-
     flexDirection: "row",
     gap: 7,
   },

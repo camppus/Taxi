@@ -1,6 +1,7 @@
 import { Gender } from "./Gender";
 
 export interface Trips {
+  id: string;
   vehicle: {
     name: string;
     description?: string;
@@ -22,6 +23,7 @@ export interface Trips {
     photoUrl?: string;
     emergencyPhone?: string;
     selfieUrl?: string;
+    id?: string;
   };
 
   bookings: [];

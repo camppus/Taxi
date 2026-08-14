@@ -313,6 +313,12 @@ export default function TripDetails() {
               requestedSeats={parsedSeats}
               onPress={() => {
                 console.log("Trip selecionada:", item);
+                router.push({
+                  pathname: "/(passenger)/reserve",
+                  params: {
+                    id: item.id,
+                  },
+                });
               }}
             />
           )}
@@ -523,7 +529,7 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
-    marginTop: -20,
+    marginTop: -24,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     backgroundColor: colors.root.primary,
