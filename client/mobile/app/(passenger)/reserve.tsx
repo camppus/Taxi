@@ -114,7 +114,6 @@ export default function ReservePage() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.content}
     >
-      {/* HEADER */}
       <View style={styles.header}>
         <Pressable onPress={() => router.back()} style={styles.iconButton}>
           <Ionicons
@@ -128,7 +127,6 @@ export default function ReservePage() {
 
         <View style={{ width: 42 }} />
       </View>
-      {/* TRIP */}
       <View style={styles.tripCard}>
         <View style={styles.tripTop}>
           <View style={styles.tripRoute}>
@@ -205,7 +203,6 @@ export default function ReservePage() {
           </View>
         </Pressable>
       </View>
-      {/* VEHICLE */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Veículo</Text>
 
@@ -245,7 +242,6 @@ export default function ReservePage() {
           </View>
         </View>
       </View>
-      {/* STOPS */}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Pontos da viagem</Text>
@@ -346,7 +342,6 @@ export default function ReservePage() {
           />
         )}
       </View>
-      {/* SEATS */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Lugares</Text>
 
@@ -382,7 +377,6 @@ export default function ReservePage() {
           </View>
         </View>
       </View>
-      {/* PAYMENT */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Forma de pagamento</Text>
 

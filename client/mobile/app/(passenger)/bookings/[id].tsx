@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import {
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,6 +19,7 @@ import { handleCall, openLink } from "@/util/lib";
 import { Coordinate } from "@/types/Coord";
 import RouteMap from "@/components/RouteMap";
 import { mockTrips } from "@/mocks/trip";
+import { Image } from "expo-image";
 
 const statusConfig: Record<
   BookingStatus,
@@ -279,15 +281,48 @@ export default function BookingDetails() {
             <SectionTitle icon="person-outline" title="Motorista" />
 
             <View style={styles.driverCard}>
-              <View style={styles.driverAvatar}>
-                <Ionicons
-                  name="person"
-                  size={30}
-                  color={colors.root.textTint}
-                />
-              </View>
+              <Pressable
+                onPress={() => {
+                  router.push({
+                    pathname: "/(passenger)/driver-profile",
+                    params: {
+                      id: trip.driver.id,
+                    },
+                  });
+                }}
+                style={({ pressed }) => [
+                  pressed && {
+                    backgroundColor: "#e8ebe9",
+                  },
+                ]}
+              >
+                {trip.driver.photoUrl ? (
+                  <Image
+                    source={{ uri: trip.driver.photoUrl }}
+                    style={styles.driverAvatar}
+                  />
+                ) : (
+                  <View style={styles.driverAvatar}>
+                    <Ionicons
+                      name="person"
+                      size={30}
+                      color={colors.root.textTint}
+                    />
+                  </View>
+                )}
+              </Pressable>
 
-              <View style={styles.driverMain}>
+              <Pressable
+                onPress={() => {
+                  router.push({
+                    pathname: "/(passenger)/driver-profile",
+                    params: {
+                      id: trip.driver.id,
+                    },
+                  });
+                }}
+                style={styles.driverMain}
+              >
                 <Text style={styles.driverName}>
                   {booking.trip.driver.user.fullName}
                 </Text>
@@ -308,7 +343,7 @@ export default function BookingDetails() {
                 <Text style={styles.driverPhone}>
                   {booking.trip.driver.user.phone}
                 </Text>
-              </View>
+              </Pressable>
 
               <TouchableOpacity
                 onPress={() => {
@@ -329,13 +364,20 @@ export default function BookingDetails() {
             <SectionTitle icon="car-outline" title="Veículo" />
 
             <View style={styles.vehicleCard}>
-              <View style={styles.vehicleIcon}>
-                <Ionicons
-                  name="car-sport-outline"
-                  size={30}
-                  color={colors.root.secondary}
+              {trip.vehicle.image ? (
+                <Image
+                  source={{ uri: trip.vehicle.image }}
+                  style={styles.vehicleImage}
                 />
-              </View>
+              ) : (
+                <View style={styles.vehicleIcon}>
+                  <Ionicons
+                    name="car-sport-outline"
+                    size={30}
+                    color={colors.root.secondary}
+                  />
+                </View>
+              )}
 
               <View style={styles.vehicleInfo}>
                 <Text style={styles.vehicleName}>
@@ -665,6 +707,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 12,
     paddingBottom: 20,
+  },
+
+  vehicleImage: {
+    width: 110,
+    height: 80,
+    borderRadius: 13,
+    backgroundColor: "#EFEFEF",
   },
 
   stopLabel: {
