@@ -44,4 +44,12 @@ export function formatMessageTime(date: Date | string): string {
   return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 }
 
-
+export function formatDate(date: Date) {
+  return date.toLocaleString("pt-AO", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}

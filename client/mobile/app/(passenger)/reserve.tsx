@@ -1,11 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import {
   Alert,
   Image,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -18,7 +16,7 @@ import colors from "@/styles/color";
 import RouteMap from "@/components/RouteMap";
 import { Coordinate } from "@/types/Coord";
 
-type PaymentMethod = "cash" | "multicaixa" | "wallet";
+type PaymentMethod = "cash" | "multicaixa";
 
 export default function ReservePage() {
   const router = useRouter();
@@ -303,10 +301,9 @@ export default function ReservePage() {
         </View>
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Agendamento</Text>
+        <Text style={styles.sectionTitle}>Data da viagem</Text>
 
         <Pressable
-          onPress={() => setShowDatePicker(true)}
           style={({ pressed }) => [styles.dateCard, pressed && styles.pressed]}
         >
           <View style={styles.dateIcon}>
@@ -325,22 +322,6 @@ export default function ReservePage() {
 
           <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
         </Pressable>
-
-        {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="datetime"
-            display={Platform.OS === "ios" ? "spinner" : "default"}
-            minimumDate={new Date()}
-            onChange={(_, selectedDate) => {
-              setShowDatePicker(false);
-
-              if (selectedDate) {
-                setDate(selectedDate);
-              }
-            }}
-          />
-        )}
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Lugares</Text>
@@ -387,14 +368,6 @@ export default function ReservePage() {
             description="Pagar através do Multicaixa Express"
             selected={paymentMethod === "multicaixa"}
             onPress={() => setPaymentMethod("multicaixa")}
-          />
-
-          <PaymentOption
-            icon="wallet-outline"
-            title="Carteira MandaVir"
-            description="Usar saldo da tua carteira"
-            selected={paymentMethod === "wallet"}
-            onPress={() => setPaymentMethod("wallet")}
           />
 
           <PaymentOption

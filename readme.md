@@ -1,498 +1,130 @@
-# 🚐 Shared Mobility Platform
+# Plataforma de Mobilidade Partilhada
 
-Uma plataforma moderna de mobilidade partilhada desenvolvida para a realidade de Angola, permitindo que vários passageiros partilhem a mesma viagem de forma segura, inteligente e económica.
+Aplicação de mobilidade para gerir viagens partilhadas, reservas e a operação de motoristas. O repositório reúne uma API, uma aplicação móvel e uma aplicação web.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)
-![NestJS](https://img.shields.io/badge/NestJS-Framework-red.svg)
-![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748.svg)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791.svg)
+## Componentes
 
----
+| Diretório | Tecnologia | Finalidade |
+| --- | --- | --- |
+| `server/api` | NestJS, Prisma, PostgreSQL e Redis | API REST, autenticação, regras de negócio e documentação da API. |
+| `client/mobile` | Expo, React Native e Expo Router | Aplicação móvel para passageiros e motoristas. |
+| `client/web` | Next.js e React | Aplicação web. |
 
-## 📖 Sobre o Projeto
+## Funcionalidades implementadas
 
-A **Shared Mobility Platform** foi concebida para resolver um problema comum nas cidades africanas: a baixa ocupação dos veículos e o elevado custo do transporte individual.
+- Autenticação por OTP e perfis de utilizador (`ADMIN`, `DRIVER` e `PASSENGER`)
+- Gestão e validação de motoristas, documentos e veículos
+- Criação, pesquisa e gestão de viagens
+- Reservas, confirmação, cancelamento e conclusão de viagens
+- Conversas associadas a reservas
+- Notificações, avaliações e denúncias
+- Localizações e rotas
 
-Ao contrário de plataformas tradicionais como Uber ou Yango, este sistema foi desenhado para **transporte coletivo inteligente**, onde uma única viagem pode transportar vários passageiros que seguem trajetos compatíveis.
+## Pré-requisitos
 
-### Exemplo de uma viagem partilhada
-
-```text
-Kilamba ───────────────────────────────► Mutamba
-
-🚐 Toyota Hiace (15 lugares)
-
-👤 Francisco  — 1 lugar
-👤 Carlos     — 2 lugares
-👤 Ana        — 1 lugar
-👤 Pedro      — 3 lugares
-
-Total: 7/15 lugares ocupados
-```
-
-Cada passageiro possui a sua própria **reserva (Booking)**, **pagamento (Payment)**, **ponto de embarque** e **ponto de desembarque**.
-
----
-
-## ✨ Funcionalidades Principais
-
-### 👤 Gestão de Utilizadores
-
-- Cadastro e autenticação
-- Login por OTP (One-Time Password)
-- Recuperação de conta
-- Gestão de perfil
-- Notificações personalizadas
-- Controlo de permissões por roles:
-  - **ADMIN**
-  - **DRIVER**
-  - **PASSENGER**
-
-### 🚗 Gestão de Motoristas
-
-- Solicitação de perfil de motorista
-- Processo de KYC (Know Your Customer)
-- Aprovação/rejeição pelo administrador
-- Histórico de viagens realizadas
-- Sistema de avaliações
-
-### 📑 KYC e Validação
-
-O sistema realiza uma validação completa dos motoristas antes de permitir a publicação de viagens.
-
-**Documentos suportados:**
-
-- Bilhete de Identidade
-- Passaporte
-- Carta de Condução
-- Seguro
-- Documento da viatura
-
-**Fluxo de aprovação:**
-
-```text
-Motorista
-    │
-    ▼
-Envia documentos
-    │
-    ▼
-Administrador analisa
-    │
- ┌──┴───┐
- ▼      ▼
-Aprovado Rejeitado
-```
-
-### 🚐 Gestão de Veículos
-
-- Cadastro de múltiplos veículos por motorista
-- Gestão de capacidade
-- Marca, modelo, ano e cor
-- Matrícula única
-- Aprovação administrativa
-
-### 🗺️ Rotas e Localizações
-
-Uma rota pode possuir vários pontos intermédios, permitindo que passageiros embarquem e desembarquem em diferentes locais.
-
-```text
-Kilamba
-   │
-   ▼
-Camama
-   │
-   ▼
-Golf 2
-   │
-   ▼
-Gamek
-   │
-   ▼
-Maianga
-   │
-   ▼
-Mutamba
-```
-
-### 🚐 Publicação de Viagens (Trips)
-
-Uma **Trip** representa a viagem completa da viatura, incluindo motorista, veículo, rota e passageiros.
-
-```text
-Trip
- ├── Motorista
- ├── Veículo
- ├── Rota
- └── Passageiros
-```
-
-### 🎟️ Reservas (Bookings)
-
-Cada passageiro possui uma reserva independente dentro da mesma viagem.
-
-```text
-Trip
- ├── Booking — Francisco — 2 lugares
- ├── Booking — Carlos — 1 lugar
- ├── Booking — Ana — 3 lugares
- └── Booking — Pedro — 1 lugar
-```
-
-Cada reserva contém:
-
-- Quantidade de lugares
-- Preço individual
-- Pagamento associado
-- Ponto de embarque
-- Ponto de desembarque
-- Estado da reserva
-
-### 💳 Pagamentos
-
-Cada **Booking** possui o seu próprio **Payment**, garantindo controlo financeiro independente.
-
-```text
-Booking
-   └── Payment — 500 Kz
-```
-
-### 💬 Chat Integrado
-
-Comunicação direta entre motorista e passageiro associada à reserva.
-
-```text
-Passageiro
-    │
-    ▼
-   Chat
-    ▲
-    │
-Motorista
-```
-
-### ⭐ Avaliações
-
-Após a conclusão da viagem, passageiros e motoristas podem avaliar-se mutuamente numa escala de 1 a 5 estrelas.
-
-### 🔔 Notificações
-
-O sistema envia notificações automáticas para eventos importantes:
-
-- Reserva confirmada
-- Viagem iniciada
-- Pagamento aprovado
-- Convite recebido
-- Nova mensagem
-
-### 📩 Convites
-
-Passageiros podem convidar amigos para participar da mesma viagem.
-
----
-
-## 🏗️ Arquitetura do Sistema
-
-```text
-                        User
-                         │
-          ┌──────────────┴──────────────┐
-          ▼                             ▼
-     Passenger                     DriverProfile
-          │                             │
-          │                             ▼
-          │                          Vehicle
-          │                             │
-          └──────────────┐              │
-                         ▼              ▼
-                        Trip
-                         │
-          ┌──────────────┼──────────────┐
-          ▼              ▼              ▼
-       Booking        Payment         Route
-          │              │              │
-          ▼              ▼              ▼
-     Conversation     Rating       RouteStop
-```
-
----
-
-## 🚀 Fluxos Principais
-
-### Cadastro e Autenticação
-
-```text
-Criar Conta
-    │
-    ▼
-Verificar OTP
-    │
-    ▼
-Conta Ativada
-```
-
-### Fluxo do Motorista
-
-```text
-Criar Conta
-    │
-    ▼
-Enviar KYC
-    │
-    ▼
-Administrador Aprova
-    │
-    ▼
-Cadastrar Veículo
-    │
-    ▼
-Publicar Trips
-```
-
-### Fluxo do Passageiro
-
-```text
-Login
-   │
-   ▼
-Pesquisar Viagens
-   │
-   ▼
-Selecionar Trip
-   │
-   ▼
-Reservar Lugares
-   │
-   ▼
-Efetuar Pagamento
-   │
-   ▼
-Reserva Confirmada
-```
-
-### Fluxo da Viagem
-
-```text
-Trip
- │
- ▼
-Boarding
- │
- ▼
-Em andamento
- │
- ▼
-Concluída
- │
- ▼
-Avaliação
-```
-
----
-
-## 🛠️ Stack Tecnológica
-
-### Backend
-
-- **Node.js** — Runtime JavaScript
-- **NestJS** — Framework backend escalável
-- **TypeScript** — Tipagem estática
-- **Prisma ORM** — Mapeamento objeto-relacional
-- **PostgreSQL** — Base de dados relacional
-- **JWT** — Autenticação segura
-- **Redis** — Cache e sessões
-- **BullMQ** — Filas e jobs assíncronos
-- **Socket.IO** — Comunicação em tempo real
-
-### Frontend Web
-
-- **Next.js**
-- **React**
-- **TailwindCSS**
-- **shadcn/ui**
-- **React Query**
-
-### Mobile
-
-- **React Native**
-- **Expo**
-
----
-
-## 📂 Estrutura do Projeto
-
-```text
-src
-├── auth
-├── users
-├── drivers
-├── vehicles
-├── routes
-├── trips
-├── bookings
-├── payments
-├── ratings
-├── chat
-├── notifications
-├── otp
-├── kyc
-└── common
-```
-
----
-
-## 📊 Modelo de Dados
-
-### Entidades Principais
-
-- **User**
-- **UserProfile**
-- **DriverProfile**
-- **DriverDocument**
-- **Vehicle**
-- **VehicleDocument**
-- **VehicleType**
-- **Location**
-- **Route**
-- **RouteStop**
-- **Trip**
-- **TripStop**
-- **Booking**
-- **Payment**
-- **Conversation**
-- **Message**
-- **Notification**
-- **Rating**
-- **Complaint**
-- **UserReport**
-- **ActivityLog**
-
-### Relação Central
-
-A entidade central do sistema é a **Trip**, que pode possuir **N Bookings** independentes.
-
-```text
-USER (Motorista)
-        │
-        ▼
-      TRIP
-   ┌────┼────┐
-   ▼    ▼    ▼
-BOOKING BOOKING BOOKING
-   │    │    │
-   ▼    ▼    ▼
-PASS A PASS B PASS C
-   │    │    │
-   ▼    ▼    ▼
-PAY A PAY B PAY C
-```
-
----
-
-## 🔒 Regras de Negócio Críticas
-
-- Uma **Trip** pertence a um motorista.
-- Uma **Trip** utiliza um veículo aprovado.
-- Uma **Trip** pode possuir várias **Bookings**.
-- Uma **Booking** pertence a apenas uma **Trip**.
-- O pagamento está sempre associado à **Booking**, nunca diretamente à **Trip**.
-- O sistema nunca permite reservas superiores à capacidade disponível.
-- A disponibilidade é recalculada automaticamente após confirmação, cancelamento ou expiração de reservas.
-- Apenas motoristas aprovados podem publicar viagens.
-- Apenas veículos aprovados podem ser utilizados em viagens.
-
----
-
-## 🚀 Instalação
-
-### Pré-requisitos
-
-- Node.js 20+
+- Node.js 20 ou superior
+- pnpm
 - PostgreSQL
 - Redis
-- npm ou yarn
 
-### Clonar o repositório
+## Configuração da API
 
-```bash
-git clone https://github.com/seu-usuario/shared-mobility-platform.git
-cd shared-mobility-platform
-```
-
-### Instalar dependências
+Entre na pasta da API e instale as dependências:
 
 ```bash
-npm install
+cd server/api
+pnpm install
 ```
 
-### Configurar variáveis de ambiente
-
-Crie um ficheiro **.env** na raiz do projeto:
+Crie `server/api/.env` com os valores adequados ao seu ambiente:
 
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/shared_mobility"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/cisclient"
 REDIS_URL="redis://localhost:6379"
-JWT_SECRET="your-secret-key"
+PORT=8080
+FRONTEND_URL="http://localhost:3000"
+
+JWT_SECRET="altere-esta-chave"
+JWT_ACCESS_SECRET="altere-esta-chave-tambem"
+ENCRYPTION_KEY="uma-chave-segura"
+BCRYPT_SALT_ROUNDS=10
+
+EMAIL_DEFAULT_ADMIN="admin@example.com"
+PASS_DEFAULT_ADMIN="altere-esta-palavra-passe"
 ```
 
-### Executar migrações
+Gere o cliente Prisma, aplique as migrações e inicie a API em modo de desenvolvimento:
 
 ```bash
-npx prisma migrate dev
+pnpm generate
+pnpm prisma migrate deploy
+pnpm dev
 ```
 
-### Iniciar o servidor
+A API fica disponível em `http://localhost:8080` e a documentação interativa em `http://localhost:8080/docs`.
+
+> Para desenvolvimento local de novas migrações, use `pnpm migrate` e informe o nome pedido pelo Prisma. O comando `pnpm seed` cria o administrador definido no ficheiro `.env`.
+
+### Serviços com Docker
+
+O ficheiro `server/api/docker-compose.yml` disponibiliza PostgreSQL e Redis, além de uma definição para a API:
 
 ```bash
-npm run start:dev
+cd server/api
+docker compose up -d postgres redis
 ```
 
----
+## Aplicação móvel
 
-## 🧩 Funcionalidades Futuras
+```bash
+cd client/mobile
+pnpm install
+pnpm start
+```
 
-- GPS em tempo real
-- Tracking completo da viagem
-- Wallet integrada
-- Cashback e promoções
-- Cupons de desconto
-- Split Payment
-- IA para agrupamento de passageiros
-- Sugestão automática de rotas
-- Dashboard administrativo avançado
-- Relatórios e analytics
-- Sistema antifraude
+Depois, use o Expo para abrir a aplicação num dispositivo, emulador ou navegador. Os ecrãs estão organizados por tipo de utilizador em `app/(passenger)` e `app/(driver)`.
 
----
+## Aplicação web
 
-## 🎯 Objetivo
+```bash
+cd client/web
+pnpm install
+pnpm dev
+```
 
-Construir uma plataforma de mobilidade partilhada **moderna, escalável e adaptada à realidade africana**, permitindo que passageiros com destinos compatíveis partilhem a mesma viatura de forma eficiente, reduzindo custos e aumentando a ocupação dos veículos.
+Por padrão, a aplicação web inicia em `http://localhost:3000`.
 
----
+## Comandos úteis
 
-## 🤝 Contribuição
+| Área | Comando | Descrição |
+| --- | --- | --- |
+| API | `pnpm dev` | Inicia a API com recarregamento automático. |
+| API | `pnpm test` | Executa os testes unitários. |
+| API | `pnpm test:e2e` | Executa os testes de integração. |
+| API | `pnpm studio` | Abre o Prisma Studio. |
+| Mobile | `pnpm start` | Inicia o Expo. |
+| Mobile | `pnpm lint` | Analisa o código da aplicação móvel. |
+| Web | `pnpm dev` | Inicia o Next.js em desenvolvimento. |
+| Web | `pnpm build` | Gera a versão de produção. |
 
-Contribuições são bem-vindas. Para contribuir:
+## Estrutura da API
 
-1. Faça um **fork** do projeto
-2. Crie uma branch para a sua funcionalidade (`git checkout -b feature/nova-funcionalidade`)
-3. Faça commit das suas alterações (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Faça push para a branch (`git push origin feature/nova-funcionalidade`)
-5. Abra um **Pull Request**
+```text
+server/api/src
+├── infra/        # Prisma, Redis, segurança, SMS e HTTP
+├── modules/      # auth, booking, driver, trip, vehicle, etc.
+└── shared/       # entidades, interfaces e utilitários comuns
+```
 
----
+O esquema e as migrações da base de dados encontram-se em `server/api/prisma`.
 
-## 📄 Licença
+## Contribuição
 
-Este projeto está licenciado sob a licença **MIT**.
+1. Crie uma branch a partir de `main`.
+2. Faça alterações pequenas e focadas.
+3. Execute os testes ou a validação aplicável.
+4. Abra um pull request, explicando a alteração e como a testou.
 
----
+## Licença
 
-## 👨‍💻 Desenvolvido com
-
-**TypeScript + NestJS + Prisma + PostgreSQL + Redis**
-
-Feito com ❤️ para transformar a mobilidade urbana em Angola e em África.
+O repositório ainda não declara uma licença. Antes de o distribuir ou reutilizar publicamente, defina uma licença no projeto.

@@ -10,9 +10,11 @@ import {
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import color from "@/styles/color";
+import { UserRole } from "@/types/User";
 
 type AppHeaderProps = {
   onMenuPress?: () => void;
+  userRole: UserRole;
 };
 
 type MenuItem = {
@@ -21,46 +23,90 @@ type MenuItem = {
   route: string;
 };
 
-const menuItems: MenuItem[] = [
-  {
-    label: "Início",
-    icon: "home-outline",
-    route: "/(passenger)",
-  },
-  {
-    label: "Minhas viagens",
-    icon: "car-outline",
-    route: "/(passenger)/bookings",
-  },
-  {
-    label: "Conversas",
-    icon: "chatbubbles-outline",
-    route: "/(passenger)/conversation",
-  },
-  {
-    label: "Avaliações",
-    icon: "star-outline",
-    route: "/(passenger)/reviews",
-  },
-  {
-    label: "Reclamações",
-    icon: "alert-circle-outline",
-    route: "/(passenger)/complaints",
-  },
-  {
-    label: "Perfil",
-    icon: "person-outline",
-    route: "/(passenger)/profile",
-  },
-  {
-    label: "Ajuda e suporte",
-    icon: "help-circle-outline",
-    route: "/(passenger)/help",
-  },
-];
-export default function AppHeader({ onMenuPress }: AppHeaderProps) {
+export default function AppHeader({ onMenuPress, userRole }: AppHeaderProps) {
   const router = useRouter();
-
+  const menuItems: Record<UserRole, MenuItem[]> = {
+    DRIVER: [
+      {
+        label: "Início",
+        icon: "home-outline",
+        route: "/(driver)",
+      },
+      {
+        label: "Minhas viagens",
+        icon: "car-outline",
+        route: "/(driver)/bookings",
+      },
+      {
+        label: "Conversas",
+        icon: "chatbubbles-outline",
+        route: "/(driver)/conversation",
+      },
+      {
+        label: "Veículos",
+        route: "/profile",
+        icon: "bicycle-outline",
+      },
+      {
+        label: "Avaliações",
+        icon: "star-outline",
+        route: "/(driver)/reviews",
+      },
+      {
+        label: "Reclamações",
+        icon: "alert-circle-outline",
+        route: "/(driver)/complaints",
+      },
+      {
+        label: "Perfil",
+        icon: "person-outline",
+        route: "/(driver)/profile",
+      },
+      {
+        label: "Ajuda e suporte",
+        icon: "help-circle-outline",
+        route: "/(driver)/help",
+      },
+    ],
+    PASSAGER: [
+      {
+        label: "Início",
+        icon: "home-outline",
+        route: "/(passenger)",
+      },
+      {
+        label: "Minhas viagens",
+        icon: "car-outline",
+        route: "/(passenger)/bookings",
+      },
+      {
+        label: "Conversas",
+        icon: "chatbubbles-outline",
+        route: "/(passenger)/conversation",
+      },
+      {
+        label: "Avaliações",
+        icon: "star-outline",
+        route: "/(passenger)/reviews",
+      },
+      {
+        label: "Reclamações",
+        icon: "alert-circle-outline",
+        route: "/(passenger)/complaints",
+      },
+      {
+        label: "Perfil",
+        icon: "person-outline",
+        route: "/(passenger)/profile",
+      },
+      {
+        label: "Ajuda e suporte",
+        icon: "help-circle-outline",
+        route: "/(passenger)/help",
+      },
+    ],
+  };
+  const userMenu = menuItems[userRole];
   const [menuVisible, setMenuVisible] = useState(false);
 
   const slideAnim = useRef(new Animated.Value(320)).current;
@@ -196,9 +242,8 @@ export default function AppHeader({ onMenuPress }: AppHeaderProps) {
 
           <View style={styles.divider} />
 
-          {/* ITEMS */}
           <View style={styles.menuItems}>
-            {menuItems.map((item) => (
+            {userMenu.map((item) => (
               <Pressable
                 key={item.label}
                 style={({ pressed }) => [

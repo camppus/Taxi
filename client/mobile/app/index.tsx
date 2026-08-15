@@ -103,7 +103,6 @@ export default function App() {
             Criar conta
           </Text>
         </Pressable>
-
         <Text
           style={{
             textDecorationLine: "underline",
@@ -114,7 +113,19 @@ export default function App() {
             router.push("/(passenger)");
           }}
         >
-          Ir para home
+          Ir para passager
+        </Text>
+        <Text
+          style={{
+            textDecorationLine: "underline",
+            color: "blue",
+            textAlign: "center",
+          }}
+          onPress={() => {
+            router.push("/(driver)");
+          }}
+        >
+          Ir para driver
         </Text>
       </View>
     </View>

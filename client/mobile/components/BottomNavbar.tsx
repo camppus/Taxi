@@ -3,53 +3,104 @@ import { Ionicons } from "@expo/vector-icons";
 import { usePathname, useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-const tabs = [
-  {
-    name: "Home",
-    route: "/",
-    icon: "home-outline",
-    activeIcon: "home",
-  },
-  {
-    name: "Viagens",
-    route: "/bookings",
-    icon: "car-outline",
-    activeIcon: "car",
-  },
-  {
-    name: "Conversas",
-    route: "/conversation",
-    icon: "chatbox-outline",
-    activeIcon: "chatbox",
-  },
-  {
-    name: "Perfil",
-    route: "/profile",
-    icon: "person-outline",
-    activeIcon: "person",
-  },
-] as const;
 export default function BottomNavbar({ userRole }: { userRole: UserRole }) {
   const router = useRouter();
   const pathname = usePathname();
 
+  const tabs = {
+    DRIVER: [
+      {
+        name: "Home",
+        route: "/(driver)",
+        activePath: "/",
+        icon: "home-outline",
+        activeIcon: "home",
+      },
+      {
+        name: "Reservas",
+        route: "/(driver)/bookings",
+        activePath: "/bookings",
+        icon: "car-outline",
+        activeIcon: "car",
+      },
+      {
+        name: "Chats",
+        route: "/(driver)/conversation",
+        activePath: "/conversation",
+        icon: "chatbox-outline",
+        activeIcon: "chatbox",
+      },
+      {
+        name: "Veículos",
+        route: "/(driver)/vehicles",
+        activePath: "/vehicles",
+        icon: "bicycle-outline",
+        activeIcon: "bicycle",
+      },
+      {
+        name: "Perfil",
+        route: "/(driver)/profile",
+        activePath: "/profile",
+        icon: "person-outline",
+        activeIcon: "person",
+      },
+    ],
+
+    PASSAGER: [
+      {
+        name: "Home",
+        route: "/(passenger)",
+        activePath: "/",
+        icon: "home-outline",
+        activeIcon: "home",
+      },
+      {
+        name: "Viagens",
+        route: "/(passenger)/bookings",
+        activePath: "/bookings",
+        icon: "car-outline",
+        activeIcon: "car",
+      },
+      {
+        name: "Conversas",
+        route: "/(passenger)/conversation",
+        activePath: "/conversation",
+        icon: "chatbox-outline",
+        activeIcon: "chatbox",
+      },
+      {
+        name: "Perfil",
+        route: "/(passenger)/profile",
+        activePath: "/profile",
+        icon: "person-outline",
+        activeIcon: "person",
+      },
+    ],
+  } as const;
+
+  const userTabs = tabs[userRole];
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.navbar}>
-        {tabs.map((tab) => {
+        {userTabs.map((tab) => {
           const active =
-            tab.route === "/"
+            tab.activePath === "/"
               ? pathname === "/"
-              : pathname.startsWith(tab.route);
+              : pathname.startsWith(tab.activePath);
 
           return (
             <Pressable
               key={tab.route}
-              onPress={() => router.push(tab.route as any)}
+              onPress={() => router.push(tab.route as never)}
               style={({ pressed }) => [styles.tab, pressed && styles.pressed]}
             >
               <Ionicons
-                name={(active ? tab.activeIcon : tab.icon) as any}
+                name={
+                  (active
+                    ? tab.activeIcon
+                    : tab.icon) as keyof typeof Ionicons.glyphMap
+                }
                 size={24}
                 color={active ? "#151519" : "#999999"}
               />
@@ -79,15 +130,10 @@ const styles = StyleSheet.create({
     height: 82,
     backgroundColor: "#FFFFFF",
     borderRadius: 42,
-
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 8,
-
-    // Android
     elevation: 12,
-
-    // iOS
     shadowColor: "#000000",
     shadowOffset: {
       width: 0,

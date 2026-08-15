@@ -21,7 +21,7 @@ import { encodeLocationMessage } from "@/util/location";
 import { mockConversations } from "@/mocks/mockConversations";
 import { mockMessagesByConversation } from "@/mocks/mockConversationMessages";
 import color from "@/styles/color";
-import { getInitials } from "@/util/lib";
+import { getInitials, handleCall } from "@/util/lib";
 import { BlurView } from "expo-blur";
 
 const CURRENT_USER = { id: "me", name: "Você" };
@@ -111,20 +111,42 @@ export default function ConversationDetailScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Stack.Screen options={{ headerShown: false }} />
-
       <View style={styles.header}>
-        {trip.driver.photoUrl ? (
-          <Image source={{ uri: trip.driver.photoUrl }} style={styles.avatar} />
-        ) : (
-          <View style={styles.avatarPlaceholder}>
-            <Text style={styles.avatarPlaceholderText}>
-              {getInitials(trip.driver.fullName)}
-            </Text>
-          </View>
-        )}
+        <Pressable
+          onPress={() => {
+            router.push({
+              pathname: "/(passenger)/driver-profile",
+              params: {
+                id: trip.driver.id,
+              },
+            });
+          }}
+        >
+          {trip.driver.photoUrl ? (
+            <Image
+              source={{ uri: trip.driver.photoUrl }}
+              style={styles.avatar}
+            />
+          ) : (
+            <View style={styles.avatarPlaceholder}>
+              <Text style={styles.avatarPlaceholderText}>
+                {getInitials(trip.driver.fullName)}
+              </Text>
+            </View>
+          )}
+        </Pressable>
 
-        <View style={styles.headerInfo}>
+        <Pressable
+          onPress={() => {
+            router.push({
+              pathname: "/(passenger)/driver-profile",
+              params: {
+                id: trip.driver.id,
+              },
+            });
+          }}
+          style={styles.headerInfo}
+        >
           <Text style={styles.headerName} numberOfLines={1}>
             {trip.driver.fullName}
           </Text>
@@ -132,10 +154,15 @@ export default function ConversationDetailScreen() {
             {trip.vehicle.brand} {trip.vehicle.model} ·{" "}
             {trip.vehicle.plateNumber}
           </Text>
-        </View>
+        </Pressable>
 
         <View style={styles.headerActions}>
-          <Pressable hitSlop={12}>
+          <Pressable
+            hitSlop={12}
+            onPress={() => {
+              handleCall(trip.driver.phone);
+            }}
+          >
             <Ionicons name="call-outline" size={22} color={color.root.green} />
           </Pressable>
 

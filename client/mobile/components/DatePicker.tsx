@@ -10,6 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import colors from "@/styles/color";
+import { formatDate } from "@/util/date";
 
 type DatePickerProps = {
   value: Date | null;
@@ -50,18 +51,6 @@ export default function DatePicker({
     setVisible(false);
   };
 
-  const formattedDate = value
-    ? value.toLocaleDateString("pt-AO", {
-        weekday: "short",
-        day: "2-digit",
-        month: "short",
-      })
-    : placeholder;
-
-  const formattedTime = value
-    ? value.toLocaleTimeString("pt-AO", { hour: "2-digit", minute: "2-digit" })
-    : null;
-
   return (
     <>
       <TouchableOpacity
@@ -81,11 +70,8 @@ export default function DatePicker({
               style={[styles.dateValueText, !value && styles.placeholderText]}
               numberOfLines={1}
             >
-              {formattedDate}
+              {formatDate(value ?? new Date())}
             </Text>
-            {formattedTime && (
-              <Text style={styles.dateTimeText}>{formattedTime}</Text>
-            )}
           </View>
         </View>
       </TouchableOpacity>

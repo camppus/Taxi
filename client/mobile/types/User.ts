@@ -1,8 +1,8 @@
 import { Gender } from "./Gender";
 
 export enum UserRole {
-  PASSAGER,
-  DRIVER,
+  PASSAGER = "PASSAGER",
+  DRIVER = "DRIVER",
 }
 
 export interface Passager {
