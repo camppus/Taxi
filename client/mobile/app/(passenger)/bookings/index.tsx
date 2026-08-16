@@ -191,7 +191,7 @@ function BookingCard({
 
         <View style={styles.driverInfo}>
           <Text style={styles.driverName}>
-            {booking.trip.driver.fullName}
+            {booking.trip.driver.user.fullName}
           </Text>
 
           <Text style={styles.vehicle}>

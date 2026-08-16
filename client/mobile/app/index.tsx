@@ -1,133 +1,281 @@
-import { Image, Pressable, Text, View } from "react-native";
-import color from "@/styles/color";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import Animated, {
+  Easing,
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+  ZoomIn,
+} from "react-native-reanimated";
+
+import color from "@/styles/color";
+import SplashScreen from "@/components/SplashScrenn";
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export default function App() {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!loading) {
+      // Nada aqui por enquanto.
+      // As animações de entrada são controladas pelos entering animations.
+    }
+  }, [loading]);
+
+  if (loading) {
+    return <SplashScreen onFinish={() => setLoading(false)} />;
+  }
+
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        gap: 30,
-      }}
-    >
+    <View style={styles.container}>
       <StatusBar style="dark" translucent={false} />
-      <Image
-        source={require("../assets/images/firstimaji.png")}
-        style={{
-          width: 350,
-          height: 280,
-          resizeMode: "contain",
-          marginTop: 120,
-        }}
-      />
 
-      <View
-        style={{
-          paddingLeft: 22,
-          paddingRight: 22,
-          gap: 5,
-        }}
-      >
-        <Text
-          style={{
-            color: color.root.textTint,
-            fontSize: 40,
-            fontFamily: "Inter_600Bold",
-            textAlign: "center",
-          }}
-        >
-          TáxiPlus
-        </Text>
-        <Text
-          style={{
-            textAlign: "center",
-            color: "#A0A0A0",
-          }}
-        >
-          Crie sua conta ou entre para solicitar viagens, acompanhar corridas e
-          chegar ao seu destino com segurança e conforto.
-        </Text>
-      </View>
+      {/* Background decoration */}
+      <View style={styles.backgroundCircleOne} />
+      <View style={styles.backgroundCircleTwo} />
 
-      <View
-        style={{
-          gap: 10,
-        }}
+      {/* HERO */}
+      <Animated.View
+        entering={ZoomIn.duration(700).easing(Easing.out(Easing.cubic))}
+        style={styles.hero}
       >
-        <Pressable
-          style={{
-            backgroundColor: color.root.secondary,
-            height: 56,
-            borderRadius: 32,
-            alignItems: "center",
-            justifyContent: "center",
-            width: 300,
-          }}
-          onPress={() => {
-            router.push("/(auth)/login");
-          }}
-        >
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 16,
-              fontWeight: "700",
-            }}
-          >
-            Acessar conta
-          </Text>
-        </Pressable>
-        <Pressable
-          style={{
-            backgroundColor: "transparent",
-            height: 56,
-            borderRadius: 32,
-            borderWidth: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onPress={() => {
-            router.push("/(auth)/register");
-          }}
-        >
-          <Text
-            style={{
-              color: color.root.secondary,
-              fontSize: 16,
-              fontWeight: "700",
-            }}
-          >
-            Criar conta
-          </Text>
-        </Pressable>
-        <Text
-          style={{
-            textDecorationLine: "underline",
-            color: "blue",
-            textAlign: "center",
-          }}
-          onPress={() => {
-            router.push("/(passenger)");
-          }}
-        >
-          Ir para passager
+        <Image
+          source={require("../assets/images/firstimaji.png")}
+          style={styles.image}
+        />
+      </Animated.View>
+
+      {/* CONTENT */}
+      <Animated.View
+        entering={FadeInUp.duration(700)
+          .delay(150)
+          .easing(Easing.out(Easing.cubic))}
+        style={styles.content}
+      >
+        <View style={styles.badge}>
+          <View style={styles.badgeDot} />
+
+          <Text style={styles.badgeText}>Mobilidade simples e segura</Text>
+        </View>
+
+        <Text style={styles.title}>
+          Viaje melhor.
+          {"\n"}
+          <Text style={styles.titleAccent}>Chegue mais longe.</Text>
         </Text>
-        <Text
-          style={{
-            textDecorationLine: "underline",
-            color: "blue",
-            textAlign: "center",
-          }}
-          onPress={() => {
-            router.push("/(driver)");
-          }}
-        >
-          Ir para driver
+
+        <Text style={styles.description}>
+          Solicite uma viagem, acompanhe o motorista em tempo real e chegue ao
+          seu destino com conforto e segurança.
         </Text>
-      </View>
+      </Animated.View>
+
+      {/* ACTIONS */}
+      <Animated.View
+        entering={FadeInDown.duration(700)
+          .delay(350)
+          .easing(Easing.out(Easing.cubic))}
+        style={styles.actions}
+      >
+        <AnimatedPressable
+          entering={FadeInDown.duration(600).delay(450)}
+          style={styles.primaryButton}
+          onPress={() => router.push("/(auth)/login")}
+        >
+          <Text style={styles.primaryText}>Acessar conta</Text>
+
+          <View style={styles.arrow}>
+            <Text style={styles.arrowText}>→</Text>
+          </View>
+        </AnimatedPressable>
+
+        <AnimatedPressable
+          entering={FadeInDown.duration(600).delay(550)}
+          style={styles.secondaryButton}
+          onPress={() => router.push("/(auth)/register")}
+        >
+          <Text style={styles.secondaryText}>Criar uma conta</Text>
+        </AnimatedPressable>
+      </Animated.View>
+
+      {/* FOOTER */}
+      <Animated.Text
+        entering={FadeIn.duration(700).delay(700)}
+        style={styles.footer}
+      >
+        Transporte urbano feito para você
+      </Animated.Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    paddingHorizontal: 24,
+    overflow: "hidden",
+  },
+
+  backgroundCircleOne: {
+    position: "absolute",
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+    backgroundColor: "#F4F5F7",
+    top: -150,
+    right: -100,
+  },
+
+  backgroundCircleTwo: {
+    position: "absolute",
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    backgroundColor: "#F8F8F8",
+    bottom: -80,
+    left: -80,
+  },
+
+  hero: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 55,
+  },
+
+  image: {
+    width: 330,
+    height: 280,
+    resizeMode: "contain",
+  },
+
+  content: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 5,
+  },
+
+  badge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 7,
+    paddingHorizontal: 13,
+    paddingVertical: 7,
+    borderRadius: 30,
+    backgroundColor: "#F5F5F5",
+    marginBottom: 17,
+  },
+
+  badgeDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: "#2ECC71",
+  },
+
+  badgeText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#777777",
+  },
+
+  title: {
+    fontSize: 36,
+    lineHeight: 42,
+    fontWeight: "900",
+    color: color.root.textTint,
+    textAlign: "center",
+    letterSpacing: -1,
+  },
+
+  titleAccent: {
+    color: color.root.secondary,
+  },
+
+  description: {
+    marginTop: 14,
+    maxWidth: 340,
+    fontSize: 14,
+    lineHeight: 21,
+    color: "#8A8A8A",
+    textAlign: "center",
+  },
+
+  actions: {
+    width: "100%",
+    marginTop: 30,
+    gap: 11,
+  },
+
+  primaryButton: {
+    width: "100%",
+    height: 58,
+    borderRadius: 30,
+    backgroundColor: color.root.secondary,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    elevation: 5,
+  },
+
+  primaryText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "800",
+  },
+
+  arrow: {
+    position: "absolute",
+    right: 7,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "rgba(255,255,255,0.14)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  arrowText: {
+    color: "#FFFFFF",
+    fontSize: 22,
+    fontWeight: "600",
+  },
+
+  secondaryButton: {
+    width: "100%",
+    height: 58,
+    borderRadius: 30,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  secondaryText: {
+    color: color.root.secondary,
+    fontSize: 15,
+    fontWeight: "800",
+  },
+
+  footer: {
+    position: "absolute",
+    bottom: 20,
+    fontSize: 10,
+    color: "#A5A5A5",
+    fontWeight: "600",
+  },
+});

@@ -24,3 +24,12 @@ export const handleCall = (number: string) => {
 export const handleEmail = (email: string) => {
   Linking.openURL(`mailto:${email}`);
 };
+
+export function scrollToTop(ref: any) {
+  requestAnimationFrame(() => {
+    ref.current?.scrollTo({
+      y: 0,
+      animated: true,
+    });
+  });
+}

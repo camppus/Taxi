@@ -18,9 +18,9 @@ type DatePickerProps = {
   label?: string;
   placeholder?: string;
   minimumDate?: Date;
+  maximumDate?: Date; // ← adiciona
   mode?: "date" | "time" | "datetime";
 };
-
 export default function DatePicker({
   value,
   onChange,
@@ -70,7 +70,7 @@ export default function DatePicker({
               style={[styles.dateValueText, !value && styles.placeholderText]}
               numberOfLines={1}
             >
-              {formatDate(value ?? new Date())}
+              {value ? formatDate(value, mode !== "date") : placeholder}
             </Text>
           </View>
         </View>
@@ -87,7 +87,7 @@ export default function DatePicker({
             <View style={styles.modalHandle} />
 
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Data e hora da viagem</Text>
+              <Text style={styles.modalTitle}>Selecione a data e hora</Text>
               <TouchableOpacity onPress={() => setVisible(false)} hitSlop={10}>
                 <Ionicons name="close" size={22} color={colors.root.textTint} />
               </TouchableOpacity>

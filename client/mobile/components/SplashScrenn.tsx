@@ -8,7 +8,6 @@ import Animated, {
 } from "react-native-reanimated";
 import { useFonts, Inter_700Bold } from "@expo-google-fonts/inter";
 import { useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
 export default function SplashScreen({ onFinish }: { onFinish(): void }) {
   const scale = useSharedValue(1);
   const [loaded] = useFonts({
@@ -47,9 +46,9 @@ export default function SplashScreen({ onFinish }: { onFinish(): void }) {
         alignItems: "center",
         justifyContent: "center",
         gap: 12,
+        height: "100%",
       }}
     >
-      <StatusBar style="light" />
       <Animated.Image
         source={require("../assets/images/logo.png")}
         style={[

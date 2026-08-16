@@ -1,20 +1,31 @@
-import SplashScreen from "@/components/SplashScrenn";
-import { Stack } from "expo-router";
-import { useState } from "react";
+import { Slot } from "expo-router";
+import { StatusBar, StyleSheet, View, LogBox } from "react-native";
 
-export default function RootLayout() {
-  const [loading, setLoading] = useState(true);
+LogBox.ignoreLogs([
+  "VirtualizedLists should never be nested inside plain ScrollViews",
+]);
 
-  if (loading) {
-    return <SplashScreen onFinish={() => setLoading(false)} />;
-  }
-
+export default function TabsLayout() {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        animation: "slide_from_right",
-      }}
-    />
+    <View style={styles.safeArea}>
+      <StatusBar animated barStyle={"dark-content"} />
+      <Slot initialRouteName="index" />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "white",
+    height: "100%",
+  },
+
+  container: {
+    flex: 1,
+  },
+
+  content: {
+    flex: 1,
+  },
+});
