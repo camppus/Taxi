@@ -19,32 +19,11 @@ import {
 import PromoBanner from "@/components/PromoBanner";
 import { useRouter } from "expo-router";
 import { useRecentSearches } from "@/hooks/useRecentSearches";
+import { reverseGeocode } from "@/util/location";
 
 type LatLng = { latitude: number; longitude: number };
 const MIN_SEATS = 1;
 const MAX_SEATS = 6;
-
-const reverseGeocode = async (coords: LatLng): Promise<string | null> => {
-  try {
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords.latitude}&lon=${coords.longitude}&zoom=16&addressdetails=1`;
-    const response = await fetch(url, { headers: { "Accept-Language": "pt" } });
-    const data = await response.json();
-    const address = data?.address;
-    return (
-      address?.suburb ||
-      address?.neighbourhood ||
-      address?.city_district ||
-      address?.town ||
-      address?.city ||
-      address?.road ||
-      data?.display_name ||
-      null
-    );
-  } catch (error) {
-    console.log("Erro no reverse geocode:", error);
-    return null;
-  }
-};
 
 export default function SearchTripScreen() {
   const [from, setFrom] = useState("");

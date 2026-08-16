@@ -1,3 +1,5 @@
+import { LatLng } from "react-native-maps";
+
 export interface LocationPayload {
   type: "location";
   name: string;
@@ -34,3 +36,26 @@ export function parseLocationMessage(message: string): LocationPayload | null {
     return null;
   }
 }
+
+
+export const reverseGeocode = async (coords: LatLng): Promise<string | null> => {
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords.latitude}&lon=${coords.longitude}&zoom=16&addressdetails=1`;
+    const response = await fetch(url, { headers: { "Accept-Language": "pt" } });
+    const data = await response.json();
+    const address = data?.address;
+    return (
+      address?.suburb ||
+      address?.neighbourhood ||
+      address?.city_district ||
+      address?.town ||
+      address?.city ||
+      address?.road ||
+      data?.display_name ||
+      null
+    );
+  } catch (error) {
+    console.log("Erro no reverse geocode:", error);
+    return null;
+  }
+};

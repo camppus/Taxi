@@ -24,13 +24,6 @@ export default function BottomNavbar({ userRole }: { userRole: UserRole }) {
         activeIcon: "car",
       },
       {
-        name: "Chats",
-        route: "/(driver)/conversation",
-        activePath: "/conversation",
-        icon: "chatbox-outline",
-        activeIcon: "chatbox",
-      },
-      {
         name: "Veículos",
         route: "/(driver)/vehicles",
         activePath: "/vehicles",
@@ -38,11 +31,11 @@ export default function BottomNavbar({ userRole }: { userRole: UserRole }) {
         activeIcon: "bicycle",
       },
       {
-        name: "Perfil",
-        route: "/(driver)/profile",
-        activePath: "/profile",
-        icon: "person-outline",
-        activeIcon: "person",
+        name: "Viagens",
+        route: "/(driver)/trips",
+        activePath: "/trips",
+        icon: "navigate-outline",
+        activeIcon: "navigate",
       },
     ],
 

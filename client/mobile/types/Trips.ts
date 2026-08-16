@@ -1,3 +1,4 @@
+import { Booking } from "./Bookings";
 import { Gender } from "./Gender";
 
 export interface Trips {
@@ -26,7 +27,7 @@ export interface Trips {
     id?: string;
   };
 
-  bookings: [];
+  bookings: Booking[];
   name: string;
   originLat: number;
   originLog: number;

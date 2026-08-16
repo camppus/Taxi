@@ -9,12 +9,10 @@ import {
   View,
 } from "react-native";
 
-import {
-  ColorPicker as ReanimatedColorPicker,
+import ReanimatedColorPicker, {
   HueSlider,
   Panel1,
   Preview,
-  
 } from "reanimated-color-picker";
 
 interface ColorPickerProps {
@@ -23,23 +21,40 @@ interface ColorPickerProps {
   label?: string;
 }
 
+const DEFAULT_COLOR = "#FFFFFF";
+
+const HEX_REGEX = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+
 export default function ColorPicker({
   value,
   onChange,
   label = "Cor",
 }: ColorPickerProps) {
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value || DEFAULT_COLOR);
+  const [tempColor, setTempColor] = useState(value || DEFAULT_COLOR);
   const [visible, setVisible] = useState(false);
-  const [tempColor, setTempColor] = useState(value);
 
   useEffect(() => {
-    setInputValue(value);
-    setTempColor(value);
+    const color = normalizeHex(value);
+    setInputValue(color);
+    setTempColor(color);
   }, [value]);
 
-  const isValidHex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(
-    inputValue.trim(),
-  );
+  const isValidHex = HEX_REGEX.test(inputValue.trim());
+
+  function normalizeHex(hex: string) {
+    let normalized = hex.trim().toUpperCase();
+
+    if (!normalized) {
+      return DEFAULT_COLOR;
+    }
+
+    if (!normalized.startsWith("#")) {
+      normalized = `#${normalized}`;
+    }
+
+    return normalized;
+  }
 
   function handleInputChange(text: string) {
     let normalized = text.toUpperCase();
@@ -50,40 +65,76 @@ export default function ColorPicker({
 
     normalized = normalized.replace(/[^#A-F0-9]/g, "");
 
+    // Evita mais de 6 caracteres depois do #
     if (normalized.length > 7) {
       normalized = normalized.slice(0, 7);
     }
 
     setInputValue(normalized);
 
-    if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(normalized)) {
+    // Só altera o valor real quando for HEX válido
+    if (HEX_REGEX.test(normalized)) {
       setTempColor(normalized);
       onChange(normalized);
     }
   }
 
   function openPicker() {
-    setTempColor(isValidHex ? inputValue : value);
+    const currentColor = HEX_REGEX.test(inputValue)
+      ? inputValue
+      : HEX_REGEX.test(value)
+        ? value
+        : DEFAULT_COLOR;
+
+    setTempColor(currentColor.toUpperCase());
     setVisible(true);
   }
 
-  function handleColorChange({ hex }: { hex: string }) {
-    setTempColor(hex);
+  function handleCancel() {
+    setTempColor(HEX_REGEX.test(value) ? value.toUpperCase() : DEFAULT_COLOR);
+
+    setVisible(false);
   }
 
+  function handleColorChange({ hex }: { hex: string }) {
+    if (!hex) return;
+
+    const normalized = hex.toUpperCase();
+
+    setTempColor(normalized);
+  }
+
+  /**
+   * Confirma a cor selecionada.
+   */
   function handleConfirm() {
-    setInputValue(tempColor.toUpperCase());
-    onChange(tempColor.toUpperCase());
+    const color = normalizeHex(tempColor);
+
+    if (!HEX_REGEX.test(color)) {
+      return;
+    }
+
+    setInputValue(color);
+    setTempColor(color);
+    onChange(color);
+
     setVisible(false);
   }
 
   return (
     <View style={styles.container}>
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label ? <Text style={styles.label}>{label}</Text> : null}
 
-      <View style={styles.inputRow}>
+      <Pressable
+        onPress={openPicker}
+        style={[
+          styles.inputRow,
+          {
+            backgroundColor: value ? "" : "#F2F2F7",
+          },
+        ]}
+      >
         <Pressable
-          onPress={openPicker}
           style={[
             styles.colorPreview,
             {
@@ -98,51 +149,28 @@ export default function ColorPicker({
           />
         </Pressable>
 
-        <TextInput
-          value={inputValue}
-          onChangeText={handleInputChange}
-          placeholder="#FFFFFF"
-          placeholderTextColor="#9CA3AF"
-          autoCapitalize="characters"
-          maxLength={7}
-          style={styles.input}
-        />
-
-        <Pressable onPress={openPicker} style={styles.pickButton}>
-          <Ionicons name="color-filter-outline" size={18} color="#777" />
-        </Pressable>
-      </View>
-
-      <Text
-        style={[
-          styles.helper,
-          !isValidHex && inputValue.length > 1 && styles.error,
-        ]}
-      >
-        {isValidHex ? "HEX válido" : "Introduz uma cor HEX válida"}
-      </Text>
+        <Text>{value ? value : "Selecione uma cor"}</Text>
+      </Pressable>
 
       <Modal
         visible={visible}
         transparent
         animationType="slide"
-        onRequestClose={() => setVisible(false)}
+        onRequestClose={handleCancel}
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
+            {/* HEADER */}
             <View style={styles.modalHeader}>
               <View>
                 <Text style={styles.modalTitle}>Escolher cor</Text>
 
                 <Text style={styles.modalSubtitle}>
-                  Seleciona a cor do veículo
+                  Seleciona uma cor da sua escolha
                 </Text>
               </View>
 
-              <Pressable
-                onPress={() => setVisible(false)}
-                style={styles.closeButton}
-              >
+              <Pressable onPress={handleCancel} style={styles.closeButton}>
                 <Ionicons name="close" size={21} color="#333" />
               </Pressable>
             </View>
@@ -153,12 +181,8 @@ export default function ColorPicker({
               style={styles.picker}
             >
               <Panel1 style={styles.panel} />
-
               <HueSlider style={styles.hueSlider} />
-
-              <Preview style={styles.preview} hideInitialColor />
             </ReanimatedColorPicker>
-
             <View style={styles.hexPreview}>
               <View
                 style={[
@@ -169,19 +193,38 @@ export default function ColorPicker({
                 ]}
               />
 
-              <Text style={styles.hexValue}>{tempColor.toUpperCase()}</Text>
+              <View style={styles.hexInfo}>
+                <Text style={styles.hexLabel}>Cor selecionada</Text>
+
+                <Text style={styles.hexValue}>{tempColor.toUpperCase()}</Text>
+              </View>
             </View>
 
+            {/* ACTIONS */}
             <View style={styles.modalActions}>
-              <Pressable
-                onPress={() => setVisible(false)}
-                style={styles.cancelButton}
-              >
+              <Pressable onPress={handleCancel} style={styles.cancelButton}>
                 <Text style={styles.cancelText}>Cancelar</Text>
               </Pressable>
 
-              <Pressable onPress={handleConfirm} style={styles.confirmButton}>
-                <Text style={styles.confirmText}>Usar esta cor</Text>
+              <Pressable
+                onPress={handleConfirm}
+                style={[
+                  styles.confirmButton,
+                  {
+                    backgroundColor: tempColor,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.confirmText,
+                    {
+                      color: getContrastColor(tempColor),
+                    },
+                  ]}
+                >
+                  Usar esta cor
+                </Text>
               </Pressable>
             </View>
           </View>
@@ -202,6 +245,10 @@ function getContrastColor(hex: string) {
           .join("")
       : clean;
 
+  if (full.length !== 6) {
+    return "#111827";
+  }
+
   const r = parseInt(full.substring(0, 2), 16);
   const g = parseInt(full.substring(2, 4), 16);
   const b = parseInt(full.substring(4, 6), 16);
@@ -214,6 +261,7 @@ function getContrastColor(hex: string) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    marginBottom: 13,
   },
 
   label: {
@@ -338,7 +386,7 @@ const styles = StyleSheet.create({
 
   hexPreview: {
     marginTop: 18,
-    height: 50,
+    height: 58,
     borderRadius: 14,
     backgroundColor: "#F8F9FA",
     flexDirection: "row",
@@ -347,12 +395,22 @@ const styles = StyleSheet.create({
   },
 
   hexColor: {
-    width: 30,
-    height: 30,
-    borderRadius: 9,
+    width: 34,
+    height: 34,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: "#E5E7EB",
-    marginRight: 10,
+    marginRight: 11,
+  },
+
+  hexInfo: {
+    flex: 1,
+  },
+
+  hexLabel: {
+    fontSize: 10,
+    color: "#9CA3AF",
+    marginBottom: 2,
   },
 
   hexValue: {
@@ -386,7 +444,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     borderRadius: 14,
-    backgroundColor: "#151519",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -394,6 +451,5 @@ const styles = StyleSheet.create({
   confirmText: {
     fontSize: 13,
     fontWeight: "800",
-    color: "#FFFFFF",
   },
 });

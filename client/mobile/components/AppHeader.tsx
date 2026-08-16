@@ -44,8 +44,13 @@ export default function AppHeader({ onMenuPress, userRole }: AppHeaderProps) {
       },
       {
         label: "Veículos",
-        route: "/profile",
+        route: "/(driver)/vehicles",
         icon: "bicycle-outline",
+      },
+      {
+        label: "Documentos",
+        route: "/(driver)/verification/documents",
+        icon: "document-attach-outline",
       },
       {
         label: "Avaliações",
@@ -181,15 +186,33 @@ export default function AppHeader({ onMenuPress, userRole }: AppHeaderProps) {
           </Text>
         </View>
 
-        <Pressable
-          onPress={openMenu}
-          style={({ pressed }) => [
-            styles.menuButton,
-            pressed && styles.menuPressed,
-          ]}
-        >
-          <Ionicons name="menu-outline" size={25} color="#111827" />
-        </Pressable>
+        <View style={styles.headerActions}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Notificações"
+            onPress={() =>
+              router.push(
+                `/${userRole === UserRole.DRIVER ? "(driver)" : "(passenger)"}/notifications` as any,
+              )
+            }
+            style={({ pressed }) => [
+              styles.notificationButton,
+              pressed && styles.menuPressed,
+            ]}
+          >
+            <Ionicons name="notifications-outline" size={23} color="#111827" />
+            <View style={styles.notificationBadge} />
+          </Pressable>
+          <Pressable
+            onPress={openMenu}
+            style={({ pressed }) => [
+              styles.menuButton,
+              pressed && styles.menuPressed,
+            ]}
+          >
+            <Ionicons name="menu-outline" size={25} color="#111827" />
+          </Pressable>
+        </View>
       </View>
 
       {/* OVERLAY */}
@@ -327,6 +350,32 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2,
+  },
+
+  notificationButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  notificationBadge: {
+    position: "absolute",
+    top: 9,
+    right: 9,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    borderWidth: 1.5,
+    borderColor: color.root.primary,
+    backgroundColor: "#E74C3C",
   },
 
   menuPressed: {

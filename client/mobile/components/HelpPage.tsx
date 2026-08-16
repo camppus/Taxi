@@ -15,12 +15,13 @@ import {
 
 import colors from "@/styles/color";
 import { handleCall, handleEmail, openLink } from "@/util/lib";
+import { UserRole } from "@/types/User";
 
-export default function HelpPage() {
+export default function HelpPage({ userRole }: { userRole: UserRole }) {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [showFaq, setShowFaq] = useState(false);
-  const [faqRole, setFaqRole] = useState<"passenger" | "driver">("passenger");
+  const [faqRole, setFaqRole] = useState<UserRole>(userRole);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const passengerFaqs = [
@@ -369,70 +370,8 @@ export default function HelpPage() {
 
         {showFaq && (
           <View style={styles.faqPanel}>
-            <View style={styles.faqTabs}>
-              <Pressable
-                onPress={() => {
-                  setFaqRole("passenger");
-                  setOpenFaq(null);
-                }}
-                style={[
-                  styles.faqTab,
-                  faqRole === "passenger" && styles.faqTabActive,
-                ]}
-              >
-                <Ionicons
-                  name="person-outline"
-                  size={16}
-                  color={
-                    faqRole === "passenger"
-                      ? colors.root.primary
-                      : colors.root.secondary
-                  }
-                />
-
-                <Text
-                  style={[
-                    styles.faqTabText,
-                    faqRole === "passenger" && styles.faqTabTextActive,
-                  ]}
-                >
-                  Passageiro
-                </Text>
-              </Pressable>
-
-              <Pressable
-                onPress={() => {
-                  setFaqRole("driver");
-                  setOpenFaq(null);
-                }}
-                style={[
-                  styles.faqTab,
-                  faqRole === "driver" && styles.faqTabActive,
-                ]}
-              >
-                <Ionicons
-                  name="car-outline"
-                  size={16}
-                  color={
-                    faqRole === "driver"
-                      ? colors.root.primary
-                      : colors.root.secondary
-                  }
-                />
-
-                <Text
-                  style={[
-                    styles.faqTabText,
-                    faqRole === "driver" && styles.faqTabTextActive,
-                  ]}
-                >
-                  Motorista
-                </Text>
-              </Pressable>
-            </View>
-
             <View style={styles.faqQuestions}>
-              {(faqRole === "passenger" ? passengerFaqs : driverFaqs).map(
+              {(faqRole === UserRole.PASSAGER ? passengerFaqs : driverFaqs).map(
                 (faq, index) => {
                   const isOpen = openFaq === index;
 

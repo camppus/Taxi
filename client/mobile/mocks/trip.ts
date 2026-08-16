@@ -40,7 +40,266 @@ export const mockTrips: Trips[] = [
       emergencyPhone: "+244 934 765 210",
     },
 
-    bookings: [],
+    bookings: [
+      {
+        id: "booking-001",
+        tripId: "trip-001",
+        passengerId: "user-001",
+
+        trip: {
+          id: "trip-001",
+          name: "Kilamba → Talatona",
+          distanceKm: 18.7,
+          estimatedMinutes: 35,
+          departureDate: "2026-08-15T07:30:00.000Z",
+          publishedSeats: 3,
+          priceBase: 2500,
+          status: "COMPLETED",
+
+          driver: {
+            id: "driver-001",
+
+            user: {
+              id: "user-driver-001",
+              fullName: "Manuel António",
+              phone: "+244923456781",
+              gender: Gender.M,
+              birthDate: "1989-04-12T00:00:00.000Z",
+              photoUrl: "https://randomuser.me/api/portraits/men/32.jpg",
+              emergencyPhone: "+244934567812",
+            },
+
+            licenseCategory: "Ligeiros",
+            licenseNumber: "LD-2847391",
+            status: "ONLINE",
+          },
+
+          vehicle: {
+            id: "vehicle-001",
+            name: "Toyota Corolla",
+            capacity: 5,
+            description: "Viatura confortável e climatizada.",
+            brand: "Toyota",
+            model: "Corolla",
+            year: 2021,
+            color: "Branco",
+            plateNumber: "LD-45-23-AA",
+            totalSeats: 5,
+            passengerSeats: 4,
+          },
+        },
+
+        passenger: {
+          id: "user-001",
+          fullName: "Francisco Diakomas",
+          phone: "+244925123456",
+          gender: Gender.M,
+          birthDate: "2005-09-20T00:00:00.000Z",
+          photoUrl: "https://randomuser.me/api/portraits/men/75.jpg",
+          emergencyPhone: "+244923987654",
+        },
+
+        seats: 1,
+        price: 2500,
+
+        status: "CONFIRMED",
+
+        payment: {
+          id: "payment-001",
+          amount: 2500,
+          method: "MULTICAIXA_EXPRESS",
+          transactionId: "MCX-20260815-001",
+          status: "PAID",
+          paidAt: "2026-08-14T18:32:00.000Z",
+          createdAt: "2026-08-14T18:30:00.000Z",
+          updatedAt: "2026-08-14T18:32:00.000Z",
+        },
+
+        rating: [],
+
+        Report: [],
+
+        tripStop: [
+          {
+            id: "stop-001-pick",
+            locationId: "location-kilamba",
+            location: {
+              id: "location-kilamba",
+              name: "Kilamba",
+              latitude: -9.1612,
+              longitude: 13.7374,
+              description: "Centralidade do Kilamba",
+              formattedAddress: "Kilamba, Luanda, Angola",
+              externalId: "osm-kilamba",
+              street: "Avenida Principal",
+              neighborhood: "Kilamba",
+              city: "Luanda",
+              province: "Luanda",
+              country: "Angola",
+            },
+            order: 1,
+            type: "PICK",
+            distanceFromStart: 0,
+            createdAt: "2026-08-14T18:20:00.000Z",
+          },
+
+          {
+            id: "stop-001-drop",
+            locationId: "location-talatona",
+            location: {
+              id: "location-talatona",
+              name: "Talatona",
+              latitude: -9.0975,
+              longitude: 13.3701,
+              description: "Zona urbana de Talatona",
+              formattedAddress: "Talatona, Luanda, Angola",
+              externalId: "osm-talatona",
+              street: "Avenida Pedro de Castro Van-Dúnem Loy",
+              neighborhood: "Talatona",
+              city: "Luanda",
+              province: "Luanda",
+              country: "Angola",
+            },
+            order: 2,
+            type: "DROP",
+            distanceFromStart: 18.7,
+            createdAt: "2026-08-14T18:20:00.000Z",
+          },
+        ],
+
+        createdAt: "2026-08-14T18:20:00.000Z",
+        updatedAt: "2026-08-14T18:32:00.000Z",
+      },
+
+      {
+        id: "booking-002",
+        tripId: "trip-002",
+        passengerId: "user-002",
+
+        trip: {
+          id: "trip-002",
+          name: "Viana → Maianga",
+          distanceKm: 24.3,
+          estimatedMinutes: 48,
+          departureDate: "2026-08-15T08:00:00.000Z",
+          publishedSeats: 4,
+          priceBase: 3000,
+          status: "AVAILABLE",
+
+          driver: {
+            id: "driver-002",
+
+            user: {
+              id: "user-driver-002",
+              fullName: "Carlos Manuel Pedro",
+              phone: "+244924567890",
+              gender: Gender.M,
+              birthDate: "1985-07-21T00:00:00.000Z",
+              photoUrl: "https://randomuser.me/api/portraits/men/45.jpg",
+              emergencyPhone: "+244933456789",
+            },
+
+            licenseCategory: "Ligeiros",
+            licenseNumber: "LD-3948217",
+            status: "ONLINE",
+          },
+
+          vehicle: {
+            id: "vehicle-002",
+            name: "Hyundai Accent",
+            capacity: 5,
+            description: "Viatura económica para viagens urbanas.",
+            brand: "Hyundai",
+            model: "Accent",
+            year: 2020,
+            color: "Cinza",
+            plateNumber: "LD-72-18-BB",
+            totalSeats: 5,
+            passengerSeats: 4,
+          },
+        },
+
+        passenger: {
+          id: "user-002",
+          fullName: "Ana Paula Joaquim",
+          phone: "+244926234567",
+          gender: Gender.F,
+          birthDate: "1998-03-14T00:00:00.000Z",
+          photoUrl: "https://randomuser.me/api/portraits/women/44.jpg",
+          emergencyPhone: "+244925876543",
+        },
+
+        seats: 2,
+        price: 6000,
+
+        status: "PENDING_PAYMENT",
+
+        payment: {
+          id: "payment-002",
+          amount: 6000,
+          method: "MULTICAIXA_EXPRESS",
+          transactionId: "MCX-20260815-002",
+          status: "PENDING",
+          createdAt: "2026-08-14T20:10:00.000Z",
+          updatedAt: "2026-08-14T20:10:00.000Z",
+        },
+
+        rating: [],
+
+        Report: [],
+
+        tripStop: [
+          {
+            id: "stop-002-pick",
+            locationId: "location-viana",
+            location: {
+              id: "location-viana",
+              name: "Viana",
+              latitude: -8.902,
+              longitude: 13.3711,
+              description: "Município de Viana",
+              formattedAddress: "Viana, Luanda, Angola",
+              externalId: "osm-viana",
+              street: "Estrada de Viana",
+              neighborhood: "Viana",
+              city: "Viana",
+              province: "Luanda",
+              country: "Angola",
+            },
+            order: 1,
+            type: "PICK",
+            distanceFromStart: 0,
+            createdAt: "2026-08-14T20:00:00.000Z",
+          },
+
+          {
+            id: "stop-002-drop",
+            locationId: "location-maianga",
+            location: {
+              id: "location-maianga",
+              name: "Maianga",
+              latitude: -8.8419,
+              longitude: 13.2312,
+              description: "Município de Luanda",
+              formattedAddress: "Maianga, Luanda, Angola",
+              externalId: "osm-maianga",
+              street: "Rua Amílcar Cabral",
+              neighborhood: "Maianga",
+              city: "Luanda",
+              province: "Luanda",
+              country: "Angola",
+            },
+            order: 2,
+            type: "DROP",
+            distanceFromStart: 24.3,
+            createdAt: "2026-08-14T20:00:00.000Z",
+          },
+        ],
+
+        createdAt: "2026-08-14T20:00:00.000Z",
+        updatedAt: "2026-08-14T20:10:00.000Z",
+      },
+    ],
   },
 
   {

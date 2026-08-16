@@ -39,6 +39,12 @@ export default function VehiclesScreen() {
   }, [vehicles, filter]);
 
   const activeCount = vehicles.filter((v) => v.status === "ACTIVE").length;
+  const pendingCount = vehicles.filter(
+    (v) => v.status === "PENDING_VERIFICATION",
+  ).length;
+  const totalSeats = vehicles
+    .filter((v) => v.status === "ACTIVE")
+    .reduce((total, vehicle) => total + vehicle.passengerSeats, 0);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -56,6 +62,32 @@ export default function VehiclesScreen() {
         >
           <Ionicons name="add" size={22} color="#fff" />
         </Pressable>
+      </View>
+
+      <View style={styles.statsPanel}>
+        <View style={styles.statItem}>
+          <View style={[styles.statIcon, styles.statIconGreen]}>
+            <Ionicons name="car-outline" size={18} color={color.root.green} />
+          </View>
+          <Text style={styles.statValue}>{activeCount}</Text>
+          <Text style={styles.statLabel}>ativos</Text>
+        </View>
+        <View style={styles.statDivider} />
+        <View style={styles.statItem}>
+          <View style={[styles.statIcon, styles.statIconYellow]}>
+            <Ionicons name="time-outline" size={18} color="#B7791F" />
+          </View>
+          <Text style={styles.statValue}>{pendingCount}</Text>
+          <Text style={styles.statLabel}>em análise</Text>
+        </View>
+        <View style={styles.statDivider} />
+        <View style={styles.statItem}>
+          <View style={[styles.statIcon, styles.statIconBlue]}>
+            <Ionicons name="people-outline" size={18} color="#2867B2" />
+          </View>
+          <Text style={styles.statValue}>{totalSeats}</Text>
+          <Text style={styles.statLabel}>lugares</Text>
+        </View>
       </View>
 
       <FlatList
@@ -96,15 +128,15 @@ export default function VehiclesScreen() {
             }
           />
         )}
-        style={{
-          marginTop: filtered.length <= 4 ? -400 : 0,
-        }}
         ListEmptyComponent={
           <View style={styles.empty}>
             <Ionicons name="car-outline" size={44} color="#C7C7CC" />
             <Text style={styles.emptyText}>Nenhum veículo nesta categoria</Text>
           </View>
         }
+        style={{
+          marginTop: filter.length >= 4 ? -290 : 10,
+        }}
       />
     </SafeAreaView>
   );
@@ -141,6 +173,32 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  statsPanel: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 10,
+    marginBottom: 14,
+    paddingVertical: 11,
+    borderRadius: 17,
+    borderWidth: 1,
+    borderColor: "#EEEEEE",
+    backgroundColor: "#FAFAFA",
+  },
+  statItem: { flex: 1, alignItems: "center" },
+  statIcon: {
+    width: 30,
+    height: 30,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 4,
+  },
+  statIconGreen: { backgroundColor: "#EAF8F0" },
+  statIconYellow: { backgroundColor: "#FFF3CF" },
+  statIconBlue: { backgroundColor: "#EEF4FF" },
+  statValue: { color: color.root.secondary, fontSize: 15, fontWeight: "800" },
+  statLabel: { color: "#737373", fontSize: 10, marginTop: 2 },
+  statDivider: { height: 45, width: 1, backgroundColor: "#E7E7E7" },
   filtersRow: {
     paddingHorizontal: 16,
     paddingBottom: 12,

@@ -16,6 +16,7 @@ import * as ImagePicker from "expo-image-picker";
 import SectionCard from "@/components/vehicles/register/SectionCard";
 import ChipSelect from "@/components/vehicles/register/ChipSelect";
 import FormInput from "@/components/vehicles/register/FormInput";
+import ColorPicker from "@/components/ColorPicker";
 import DocumentUploadRow, {
   PickedDocument,
 } from "@/components/vehicles/register/DocumentUploadRow";
@@ -216,7 +217,6 @@ export default function VehicleRegisterScreen() {
             onChangeText={(v) => update("name", v)}
             error={showErrors && errors.name}
           />
-
           <FormInput
             label="Descrição"
             placeholder="Ex: Sedan confortável e climatizado"
@@ -225,7 +225,6 @@ export default function VehicleRegisterScreen() {
             multiline
             style={{ minHeight: 70, textAlignVertical: "top" }}
           />
-
           <Text style={styles.fieldLabel}>
             Tipo de veículo<Text style={styles.required}> *</Text>
           </Text>
@@ -237,7 +236,6 @@ export default function VehicleRegisterScreen() {
               error={showErrors && errors.vehicleTypeId}
             />
           </View>
-
           <View style={styles.row}>
             <View style={styles.half}>
               <FormInput
@@ -260,7 +258,6 @@ export default function VehicleRegisterScreen() {
               />
             </View>
           </View>
-
           <View style={styles.row}>
             <View style={styles.half}>
               <FormInput
@@ -274,18 +271,14 @@ export default function VehicleRegisterScreen() {
                 error={showErrors && errors.year}
               />
             </View>
-            <View style={styles.half}>
-              <FormInput
-                label="Cor"
-                required
-                placeholder="Branco"
-                value={form.color}
-                onChangeText={(v) => update("color", v)}
-                error={showErrors && errors.color}
-              />
-            </View>
           </View>
-
+          <View style={styles.row}>
+            <ColorPicker
+              label="Cor do veículo"
+              value={form.color}
+              onChange={(v) => update("color", v)}
+            />
+          </View>
           <FormInput
             label="Matrícula"
             required
