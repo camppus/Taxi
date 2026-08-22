@@ -1,0 +1,188 @@
+"use client";
+
+import { motion } from "framer-motion";
+
+const logoPath = `
+M0 4347 c0 -1397 2 -1658 14 -1683 8 -16 19 -73 25 -126 6 -54 18 -123 26 -155 8 -31 15 -64 15 -73 0 -8 9 -46 21 -85 11 -38 30 -101 41 -140 28 -95 105 -287 151 -380 43 -85 46 -92 85 -165 20 -36 47 -82 61 -104 25 -37 64 -95 122 -182 101 -151 313 -385 460 -508 47 -40 95 -81 106 -92 11 -10 44 -35 73 -54 28 -19 63 -45 77 -58 14 -12 29 -22 33 -22 4 0 17 -9 30 -20 13 -11 28 -20 35 -20 7 0 20 -9 30 -20 10 -11 23 -20 28 -20 6 0 18 -6 26 -14 9 -8 48 -30 86 -50 39 -20 77 -40 85 -45 17 -9 52 -27 77 -40 10 -5 37 -18 59 -30 23 -11 48 -21 55 -21 8 0 32 -9 54 -19 97 -46 133 -61 151 -61 10 0 32 -7 48 -15 16 -9 57 -22 90 -30 210 -49 300 -67 371 -75 44 -4 100 -15 125 -24 63 -22 638 -24 673 -2 12 7 68 19 123 25 56 6 128 17 160 26 32 8 65 15 74 15 8 0 47 9 85 21 39 11 102 30 140 41 39 12 113 38 165 60 52 21 100 38 105 38 6 0 21 9 35 20 14 11 33 20 43 20 11 0 30 9 44 20 14 11 34 20 44 20 10 0 21 5 24 10 3 6 23 18 43 28 81 40 158 85 178 103 11 10 24 19 30 19 5 0 33 18 62 40 29 22 55 40 58 40 3 0 62 46 132 102 153 123 280 243 376 359 40 47 80 94 90 105 10 10 35 44 56 74 22 30 46 64 55 75 22 28 105 156 105 162 0 3 8 17 19 31 10 15 42 71 70 125 28 53 55 105 60 115 24 44 51 110 51 123 0 8 5 20 10 25 18 18 83 207 129 369 19 69 49 224 72 378 7 43 16 80 20 83 5 3 9 144 9 313 0 244 -3 314 -14 337 -8 16 -17 58 -21 94 -7 75 -50 294 -70 360 -7 25 -23 79 -36 120 -34 115 -139 371 -191 465 -7 11 -27 49 -46 85 -20 36 -47 82 -61 104 -14 21 -42 62 -61 91 -148 223 -365 471 -546 621 -32 27 -68 57 -79 67 -11 10 -45 36 -75 57 -30 22 -64 46 -75 54 -38 29 -96 66 -104 66 -5 0 -15 7 -22 16 -7 9 -22 20 -34 25 -11 6 -42 23 -70 39 -27 16 -63 36 -80 45 -16 8 -37 19 -45 24 -8 5 -26 14 -40 20 -14 6 -32 15 -40 20 -46 27 -100 51 -114 51 -8 0 -30 9 -48 20 -18 11 -41 20 -50 20 -10 0 -32 9 -50 20 -18 11 -41 20 -51 20 -11 0 -33 7 -50 15 -38 17 -113 36 -297 75 -146 32 -176 35 -185 20 -3 -5 -5 -294 -5 -642 0 -632 0 -633 21 -650 12 -10 31 -18 43 -18 11 -1 39 -9 61 -20 22 -11 48 -19 58 -20 11 0 30 -9 44 -20 14 -11 33 -20 42 -20 9 -1 39 -14 66 -30 28 -16 66 -38 85 -48 60 -31 82 -46 133 -84 27 -21 53 -38 58 -38 17 0 294 -284 334 -343 186 -273 267 -476 315 -787 32 -207 24 -371 -30 -625 -14 -67 -41 -159 -50 -170 -4 -5 -11 -26 -15 -45 -4 -19 -16 -47 -26 -62 -11 -14 -19 -31 -19 -38 0 -7 -14 -37 -32 -68 -17 -32 -40 -73 -50 -92 -60 -111 -140 -214 -272 -345 -132 -131 -243 -218 -333 -260 -17 -8 -34 -19 -37 -24 -14 -22 -207 -102 -376 -156 -55 -18 -66 -20 -270 -50 -175 -26 -348 -16 -585 35 -67 14 -159 41 -170 50 -5 4 -26 11 -45 15 -19 4 -46 16 -59 26 -13 11 -31 19 -40 19 -9 1 -38 14 -66 30 -27 17 -68 39 -90 50 -41 21 -51 27 -151 95 -76 51 -317 292 -369 368 -142 208 -209 349 -273 572 -27 93 -64 339 -60 395 l3 45 855 5 855 5 0 635 0 635 -844 3 c-603 1 -848 5 -858 13 -19 17 -19 401 0 418 10 8 255 12 858 13 l844 3 0 638 2 637 -1500 0 -1500 0 0 -1653z
+`;
+
+const pieces = [
+  {
+    id: "top",
+    clip: "M0 0H150V55H0Z",
+    from: { x: 0, y: -55, rotate: -8 },
+    delay: 0,
+  },
+  {
+    id: "right",
+    clip: "M100 0H150V150H100Z",
+    from: { x: 55, y: 0, rotate: 10 },
+    delay: 0.1,
+  },
+  {
+    id: "bottom",
+    clip: "M0 105H150V150H0Z",
+    from: { x: 0, y: 55, rotate: 8 },
+    delay: 0.2,
+  },
+  {
+    id: "left",
+    clip: "M0 0H50V150H0Z",
+    from: { x: -55, y: 0, rotate: -10 },
+    delay: 0.3,
+  },
+  {
+    id: "center",
+    clip: "M45 35H105V115H45Z",
+    from: { x: 0, y: 35, rotate: 5 },
+    delay: 0.4,
+  },
+];
+
+export default function Loader() {
+  return (
+    <div className="flex lg:h-196 flex-col items-center justify-center bg-background">
+      <div className="flex flex-col items-center">
+        <motion.svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 150 150"
+          width={150}
+          height={150}
+          initial="initial"
+          animate="animate"
+          style={{
+            width: 150,
+            height: 150,
+            flexShrink: 0,
+            scale: 0.6,
+          }}
+        >
+          <defs>
+            {pieces.map((piece) => (
+              <clipPath
+                key={piece.id}
+                id={`clip-${piece.id}`}
+                clipPathUnits="userSpaceOnUse"
+              >
+                <path d={piece.clip} />
+              </clipPath>
+            ))}
+
+            <filter
+              id="logo-glow"
+              x="-100%"
+              y="-100%"
+              width="300%"
+              height="300%"
+            >
+              <feGaussianBlur stdDeviation="2.5" result="blur" />
+
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {pieces.map((piece) => (
+            <motion.g
+              key={piece.id}
+              clipPath={`url(#clip-${piece.id})`}
+              style={{
+                transformOrigin: "75px 75px",
+              }}
+              initial={{
+                x: piece.from.x,
+                y: piece.from.y,
+                rotate: piece.from.rotate,
+                opacity: 0,
+              }}
+              animate={{
+                x: [piece.from.x, 0, 0, 0, piece.from.x],
+                y: [piece.from.y, 0, 0, 0, piece.from.y],
+                rotate: [piece.from.rotate, 0, 0, 0, piece.from.rotate],
+                opacity: [0, 1, 1, 1, 0],
+              }}
+              transition={{
+                duration: 3.8,
+                delay: piece.delay,
+                repeat: Infinity,
+                repeatDelay: 0.35,
+                times: [0, 0.28, 0.48, 0.68, 1],
+                ease: ["easeOut", "easeInOut", "linear", "easeIn"],
+              }}
+            >
+              <g
+                transform="translate(0,150.03) scale(0.025,-0.025)"
+                fill="#2ecc71"
+                opacity="0.25"
+                filter="url(#logo-glow)"
+              >
+                <path d={logoPath} />
+              </g>
+
+              <g
+                transform="translate(0,150.03) scale(0.025,-0.025)"
+                fill="#2ecc71"
+              >
+                <path d={logoPath} />
+              </g>
+            </motion.g>
+          ))}
+
+          <motion.circle
+            cx="75"
+            cy="75"
+            r="43"
+            fill="none"
+            stroke="#2ecc71"
+            strokeWidth="0.7"
+            initial={{
+              opacity: 0,
+              scale: 0.2,
+            }}
+            animate={{
+              opacity: [0, 0, 0.35, 0, 0],
+              scale: [0.7, 0.7, 1, 1.18, 1.5],
+            }}
+            transition={{
+              duration: 3.8,
+              repeat: Infinity,
+              repeatDelay: 0.35,
+              times: [0, 0.42, 0.55, 0.72, 1],
+              ease: "easeOut",
+            }}
+          />
+        </motion.svg>
+
+        {/* Texto */}
+        <motion.div
+          className="mt-1 flex items-center text-sm font-medium text-muted-foreground"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            delay: 0.5,
+            duration: 0.5,
+          }}
+        >
+          <span>Carregando</span>
+
+          <motion.span
+            className="inline-block w-[18px] text-left"
+            animate={{
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{
+              duration: 1.2,
+              repeat: Infinity,
+              times: [0, 0.2, 0.8, 1],
+              ease: "easeInOut",
+            }}
+          >
+            ...
+          </motion.span>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
