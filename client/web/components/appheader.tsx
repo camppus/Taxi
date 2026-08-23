@@ -144,7 +144,7 @@ export default function AppHeader({ onMenuClick }: AppHeaderProps) {
             {title}
           </h1>
 
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground lg:flex hidden">
             Gerencie e acompanhe a operação da plataforma
           </p>
         </div>

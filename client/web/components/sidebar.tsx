@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -19,7 +20,6 @@ import {
   SteeringIcon,
   Navigation03Icon,
   StartUpIcon,
-  Menu01Icon,
   Cancel01Icon,
   ArrowLeft01Icon,
   ArrowRight01Icon,
@@ -27,8 +27,8 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
 import logo from "@/assets/images/logo.png";
-import { useEffect } from "react";
 
 const mainNavItems = [
   {
@@ -42,7 +42,7 @@ const mainNavItems = [
     icon: SteeringIcon,
   },
   {
-    to: "/app/passengers",
+    to: "/app/users",
     label: "Passageiros",
     icon: UserGroupIcon,
   },
@@ -68,7 +68,7 @@ const mainNavItems = [
   },
   {
     to: "/app/integrations",
-    label: "Integrações",
+    label: "Feedbakcs",
     icon: PuzzleIcon,
   },
   {
@@ -85,7 +85,7 @@ const operationItems = [
     icon: Car01Icon,
   },
   {
-    to: "/app/requests",
+    to: "/app/bookings",
     label: "Solicitações",
     icon: Navigation03Icon,
   },
@@ -107,8 +107,10 @@ function NavRow({
   onSelect?: () => void;
 }) {
   const pathname = usePathname();
-
-  const active = pathname === item.to || pathname.startsWith(`${item.to}/`);
+  const active =
+    item.to === "/app"
+      ? pathname === "/app"
+      : pathname === item.to || pathname.startsWith(`${item.to}/`);
 
   return (
     <Link
@@ -121,7 +123,7 @@ function NavRow({
         collapsed ? "justify-center px-0" : "gap-3 px-3",
 
         active
-          ? "bg-accent text-accent-foreground font-medium"
+          ? "bg-accent font-medium text-accent-foreground"
           : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
       ].join(" ")}
     >
@@ -159,6 +161,30 @@ export default function Sidebar({
   setCollapsed,
   setMobileOpen,
 }: Props) {
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+    const handleViewportChange = () => {
+      // Mobile: sidebar nunca pode estar collapsed
+      if (!mediaQuery.matches) {
+        setCollapsed(false);
+      }
+
+      // Desktop: mobile menu deve estar fechado
+      if (mediaQuery.matches) {
+        setMobileOpen(false);
+      }
+    };
+
+    handleViewportChange();
+
+    mediaQuery.addEventListener("change", handleViewportChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleViewportChange);
+    };
+  }, [setCollapsed, setMobileOpen]);
+
   const sidebarWidth = collapsed ? "w-[72px]" : "w-72";
 
   return (
@@ -171,6 +197,7 @@ export default function Sidebar({
           sidebarWidth,
 
           "max-md:w-72",
+
           mobileOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full",
         ].join(" ")}
       >
@@ -211,9 +238,6 @@ export default function Sidebar({
                 size={14}
                 strokeWidth={1.75}
                 className="text-muted-foreground"
-                onClick={() => {
-                  setMobileOpen(false);
-                }}
               />
             )}
           </div>
@@ -243,7 +267,15 @@ export default function Sidebar({
           <button
             type="button"
             onClick={() => setMobileOpen(false)}
-            className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground md:hidden"
+            className="
+              absolute right-3 top-3
+              flex size-8 items-center justify-center
+              rounded-lg
+              text-muted-foreground
+              hover:bg-accent
+              hover:text-foreground
+              md:hidden
+            "
           >
             <HugeiconsIcon icon={Cancel01Icon} size={18} strokeWidth={1.75} />
           </button>
@@ -259,7 +291,13 @@ export default function Sidebar({
               <button
                 type="button"
                 title="Pesquisar"
-                className="flex size-10 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
+                className="
+                  flex size-10 items-center justify-center
+                  rounded-lg
+                  text-muted-foreground
+                  hover:bg-accent
+                  hover:text-foreground
+                "
               >
                 <HugeiconsIcon
                   icon={Search01Icon}
@@ -273,21 +311,48 @@ export default function Sidebar({
                   icon={Search01Icon}
                   size={16}
                   strokeWidth={1.75}
-                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  className="
+                    pointer-events-none
+                    absolute left-3 top-1/2
+                    -translate-y-1/2
+                    text-muted-foreground
+                  "
                 />
 
                 <Input
                   placeholder="Pesquisar"
-                  className="h-9 rounded-lg border-border bg-muted/40 pl-9 pr-9 text-sm text-foreground placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring"
+                  className="
+                    h-9 rounded-lg
+                    border-border
+                    bg-muted/40
+                    pl-9 pr-9
+                    text-sm
+                    text-foreground
+                    placeholder:text-muted-foreground
+                    focus-visible:ring-1
+                    focus-visible:ring-ring
+                  "
                 />
 
-                <kbd className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 rounded border border-border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                <kbd
+                  className="
+                    pointer-events-none
+                    absolute right-3 top-1/2
+                    -translate-y-1/2
+                    rounded border border-border
+                    bg-background
+                    px-1.5 py-0.5
+                    text-[10px]
+                    text-muted-foreground
+                  "
+                >
                   /
                 </kbd>
               </div>
             )}
           </div>
 
+          {/* NAVIGATION */}
           <div className="mt-4 min-h-0 flex-1 overflow-y-auto">
             <div className="mb-4">
               {!collapsed && (
@@ -331,13 +396,23 @@ export default function Sidebar({
           {/* OPERATION CARD */}
           {!collapsed && (
             <div
-              className={[
-                "relative mt-3 shrink-0 rounded-xl border border-border bg-card dark:bg-white/3 p-4",
-              ].join("")}
+              className="
+                relative mt-3 shrink-0
+                rounded-xl
+                border border-border
+                bg-card
+                p-4
+                dark:bg-white/[0.03]
+              "
             >
               <button
                 type="button"
-                className="absolute right-3 top-4 text-muted-foreground transition-colors hover:text-foreground"
+                className="
+                  absolute right-3 top-4
+                  text-muted-foreground
+                  transition-colors
+                  hover:text-foreground
+                "
               >
                 <HugeiconsIcon
                   icon={StartUpIcon}
