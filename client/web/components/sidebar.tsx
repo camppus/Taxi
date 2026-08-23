@@ -62,12 +62,7 @@ const mainNavItems = [
     icon: Wallet01Icon,
   },
   {
-    to: "/app/analytics",
-    label: "Analytics",
-    icon: AnalyticsUpIcon,
-  },
-  {
-    to: "/app/integrations",
+    to: "/app/feedbakcs",
     label: "Feedbakcs",
     icon: PuzzleIcon,
   },

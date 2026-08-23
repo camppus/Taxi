@@ -10,7 +10,6 @@ import {
   Clock01Icon,
   MoreHorizontalIcon,
   EyeIcon,
-  ArrowRight01Icon,
   CheckmarkCircle02Icon,
   Cancel01Icon,
   Wallet01Icon,
@@ -32,7 +31,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import dynamic from "next/dynamic";
 import {
   Select,
   SelectContent,
@@ -42,6 +41,7 @@ import {
 } from "@/components/ui/select";
 
 import StatsCard from "@/components/StatsCard";
+import { Mocktrips } from "@/mocks/trips";
 
 type TripStatus = "active" | "waiting" | "completed" | "cancelled";
 
@@ -63,7 +63,7 @@ interface TripBooking {
   paymentStatus: "paid" | "pending" | "failed";
 }
 
-interface Trip {
+export interface Trip {
   id: string;
 
   from: TripLocation;
@@ -84,276 +84,6 @@ interface Trip {
   departureAt: string;
   createdAt: string;
 }
-
-const trips: Trip[] = [
-  {
-    id: "TRP-001",
-
-    from: {
-      name: "Talatona",
-      lat: -8.917,
-      lng: 13.184,
-    },
-
-    to: {
-      name: "Kilamba",
-      lat: -9.001,
-      lng: 13.266,
-    },
-
-    status: "active",
-
-    driver: {
-      id: "DRV-001",
-      name: "João Manuel",
-      avatar: "https://i.pravatar.cc/150?img=11",
-      vehicle: "Toyota Corolla",
-      plate: "LD-45-23-AB",
-    },
-
-    bookings: [
-      {
-        id: "BKG-001",
-        passenger: {
-          id: "PAX-001",
-          name: "Ana Maria",
-          avatar: "https://i.pravatar.cc/150?img=32",
-        },
-        seats: 1,
-        amount: 4500,
-        paymentStatus: "paid",
-      },
-      {
-        id: "BKG-002",
-        passenger: {
-          id: "PAX-002",
-          name: "Carlos Pedro",
-          avatar: "https://i.pravatar.cc/150?img=33",
-        },
-        seats: 1,
-        amount: 4500,
-        paymentStatus: "paid",
-      },
-    ],
-
-    departureAt: "Agora",
-    createdAt: "Há 22 min",
-  },
-
-  {
-    id: "TRP-002",
-
-    from: {
-      name: "Morro Bento",
-      lat: -8.875,
-      lng: 13.206,
-    },
-
-    to: {
-      name: "Mutamba",
-      lat: -8.814,
-      lng: 13.231,
-    },
-
-    status: "active",
-
-    driver: {
-      id: "DRV-003",
-      name: "Pedro António",
-      avatar: "https://i.pravatar.cc/150?img=13",
-      vehicle: "Toyota Yaris",
-      plate: "LD-72-11-EF",
-    },
-
-    bookings: [
-      {
-        id: "BKG-003",
-        passenger: {
-          id: "PAX-003",
-          name: "Maria João",
-          avatar: "https://i.pravatar.cc/150?img=44",
-        },
-        seats: 1,
-        amount: 3200,
-        paymentStatus: "pending",
-      },
-    ],
-
-    departureAt: "Há 4 min",
-    createdAt: "Há 31 min",
-  },
-
-  {
-    id: "TRP-003",
-
-    from: {
-      name: "Viana",
-      lat: -8.902,
-      lng: 13.371,
-    },
-
-    to: {
-      name: "Cacuaco",
-      lat: -8.802,
-      lng: 13.371,
-    },
-
-    status: "waiting",
-
-    driver: {
-      id: "DRV-004",
-      name: "Miguel Sebastião",
-      avatar: "https://i.pravatar.cc/150?img=14",
-      vehicle: "Kia Picanto",
-      plate: "LD-18-45-GH",
-    },
-
-    bookings: [
-      {
-        id: "BKG-004",
-        passenger: {
-          id: "PAX-004",
-          name: "Pedro António",
-          avatar: "https://i.pravatar.cc/150?img=51",
-        },
-        seats: 1,
-        amount: 5200,
-        paymentStatus: "paid",
-      },
-    ],
-
-    departureAt: "Em 12 min",
-    createdAt: "Há 8 min",
-  },
-
-  {
-    id: "TRP-004",
-
-    from: {
-      name: "Maianga",
-      lat: -8.827,
-      lng: 13.226,
-    },
-
-    to: {
-      name: "Ingombota",
-      lat: -8.811,
-      lng: 13.232,
-    },
-
-    status: "active",
-
-    driver: {
-      id: "DRV-005",
-      name: "António José",
-      avatar: "https://i.pravatar.cc/150?img=15",
-      vehicle: "Toyota Corolla",
-      plate: "LD-64-32-IJ",
-    },
-
-    bookings: [
-      {
-        id: "BKG-005",
-        passenger: {
-          id: "PAX-005",
-          name: "Joana Manuel",
-          avatar: "https://i.pravatar.cc/150?img=47",
-        },
-        seats: 2,
-        amount: 7600,
-        paymentStatus: "paid",
-      },
-    ],
-
-    departureAt: "Há 18 min",
-    createdAt: "Há 41 min",
-  },
-
-  {
-    id: "TRP-005",
-
-    from: {
-      name: "Benfica",
-      lat: -8.933,
-      lng: 13.161,
-    },
-
-    to: {
-      name: "Patriota",
-      lat: -8.942,
-      lng: 13.278,
-    },
-
-    status: "completed",
-
-    driver: {
-      id: "DRV-006",
-      name: "Manuel António",
-      avatar: "https://i.pravatar.cc/150?img=18",
-      vehicle: "Hyundai Accent",
-      plate: "LD-91-21-KL",
-    },
-
-    bookings: [
-      {
-        id: "BKG-006",
-        passenger: {
-          id: "PAX-006",
-          name: "Manuel Francisco",
-          avatar: "https://i.pravatar.cc/150?img=53",
-        },
-        seats: 1,
-        amount: 4100,
-        paymentStatus: "paid",
-      },
-      {
-        id: "BKG-007",
-        passenger: {
-          id: "PAX-007",
-          name: "Daniel Paulo",
-          avatar: "https://i.pravatar.cc/150?img=59",
-        },
-        seats: 1,
-        amount: 4100,
-        paymentStatus: "paid",
-      },
-    ],
-
-    departureAt: "Hoje, 09:42",
-    createdAt: "Hoje, 08:55",
-  },
-
-  {
-    id: "TRP-006",
-
-    from: {
-      name: "Luanda Sul",
-      lat: -8.93,
-      lng: 13.195,
-    },
-
-    to: {
-      name: "Maculusso",
-      lat: -8.823,
-      lng: 13.223,
-    },
-
-    status: "cancelled",
-
-    driver: {
-      id: "DRV-007",
-      name: "Carlos Manuel",
-      avatar: "https://i.pravatar.cc/150?img=19",
-      vehicle: "Toyota Vitz",
-      plate: "LD-22-34-MN",
-    },
-
-    bookings: [],
-
-    departureAt: "Hoje, 08:30",
-    createdAt: "Hoje, 08:10",
-  },
-];
 
 const statusConfig = {
   active: {
@@ -394,11 +124,15 @@ const formatCurrency = (value: number) => `${value.toLocaleString("pt-AO")} Kz`;
 export default function TripsPage() {
   const [search, setSearch] = React.useState("");
   const [status, setStatus] = React.useState("all");
+  const pageSize = 6;
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [isLoadingMore, setIsLoadingMore] = React.useState(false);
 
   const filteredTrips = React.useMemo(() => {
     const query = search.toLowerCase().trim();
 
-    return trips.filter((trip) => {
+    return Mocktrips.filter((trip) => {
       const matchesSearch =
         !query ||
         trip.id.toLowerCase().includes(query) ||
@@ -413,11 +147,70 @@ export default function TripsPage() {
     });
   }, [search, status]);
 
+  const lastPage = Math.max(1, Math.ceil(filteredTrips.length / pageSize));
+
+  const visibleTrips = React.useMemo(() => {
+    return filteredTrips.slice(0, currentPage * pageSize);
+  }, [filteredTrips, currentPage]);
+
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [search, status]);
+
+  const loadNextPage = React.useCallback(async () => {
+    if (isLoadingMore) return;
+
+    if (lastPage <= currentPage) return;
+
+    setIsLoadingMore(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 700));
+
+    setCurrentPage((current) => {
+      if (current >= lastPage) return current;
+
+      return current + 1;
+    });
+
+    setIsLoadingMore(false);
+  }, [currentPage, lastPage, isLoadingMore]);
+
+  const loadMoreRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    const element = loadMoreRef.current;
+
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+
+        if (!entry.isIntersecting) return;
+
+        if (lastPage <= currentPage) return;
+
+        if (isLoadingMore) return;
+
+        loadNextPage();
+      },
+      {
+        rootMargin: "200px",
+      },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [currentPage, lastPage, isLoadingMore, loadNextPage]);
+
   const stats = {
-    total: trips.length,
-    active: trips.filter((trip) => trip.status === "active").length,
-    waiting: trips.filter((trip) => trip.status === "waiting").length,
-    completed: trips.filter((trip) => trip.status === "completed").length,
+    total: Mocktrips.length,
+    active: Mocktrips.filter((trip) => trip.status === "active").length,
+    waiting: Mocktrips.filter((trip) => trip.status === "waiting").length,
+    completed: Mocktrips.filter((trip) => trip.status === "completed").length,
   };
 
   return (
@@ -533,7 +326,7 @@ export default function TripsPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {filteredTrips.map((trip) => {
+        {visibleTrips.map((trip) => {
           const config = statusConfig[trip.status];
 
           const totalSeats = trip.bookings.reduce(
@@ -794,6 +587,18 @@ export default function TripsPage() {
           </p>
         </div>
       )}
+      <div
+        ref={loadMoreRef}
+        className="flex min-h-12 items-center justify-center"
+      >
+        {isLoadingMore && currentPage < lastPage && (
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <span className="size-4 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-primary" />
+
+            <span className="text-xs">A carregar mais corridas...</span>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
