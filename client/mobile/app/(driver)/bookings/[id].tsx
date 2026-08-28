@@ -151,35 +151,9 @@ export default function DriverBookingDetailsScreen() {
             <Ionicons name="call-outline" size={19} color={color.root.green} />
           </Pressable>
         </View>
-        <Text style={styles.sectionTitle}>Rota da reserva</Text>
-        <View style={styles.routeCard}>
-          <RoutePoint
-            title="EMBARQUE"
-            name={pick.name}
-            address={pick.formattedAddress ?? pick.neighborhood}
-            icon="ellipse"
-          />
-          <View style={styles.routeLine} />
-          <RoutePoint
-            title="DESEMBARQUE"
-            name={drop.name}
-            address={drop.formattedAddress ?? drop.neighborhood}
-            icon="location"
-          />
-        </View>
-        <RouteMap
-          from={pick.name}
-          to={drop.name}
-          fromCoords={{ latitude: pick.latitude, longitude: pick.longitude }}
-          toCoords={{ latitude: drop.latitude, longitude: drop.longitude }}
-          routeCoords={[
-            { latitude: pick.latitude, longitude: pick.longitude },
-            { latitude: drop.latitude, longitude: drop.longitude },
-          ]}
-          title="Mapa do percurso"
-          showBottomCard={false}
-        />
-        <Text style={styles.sectionTitle}>Informações</Text>
+        
+        
+        <Text style={styles.sectionTitle}>Especificações</Text>
         <View style={styles.infoCard}>
           <Info
             icon="calendar-outline"

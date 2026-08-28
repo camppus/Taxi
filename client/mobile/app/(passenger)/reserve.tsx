@@ -243,10 +243,6 @@ export default function ReservePage() {
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Pontos da viagem</Text>
-
-          {selectingDropoff && (
-            <Text style={styles.mapHint}>Toque no mapa para escolher</Text>
-          )}
         </View>
 
         <View style={styles.stopCard}>
@@ -276,29 +272,20 @@ export default function ReservePage() {
                 <Text style={styles.stopValue}>{trip.name.split(" ")[2]}</Text>
               </View>
 
-              <Pressable
-                onPress={() => setSelectingDropoff((current) => !current)}
-                style={styles.changeButton}
-              >
-                <Text style={styles.changeButtonText}>
-                  {selectingDropoff ? "Concluir" : "Mapa"}
-                </Text>
-              </Pressable>
+              <Ionicons name="location" size={20} color={"black"} />
             </View>
           </View>
         </View>
 
-        <View style={styles.mapContainer}>
-          <RouteMap
-            from="Ponto de embarque"
-            to="Ponto de desembarque"
-            fromCoords={pickup}
-            toCoords={dropoff}
-            routeCoords={routeCoords}
-            title="Rota da viagem"
-            subtitle={`${trip.name} · ${trip.departureTime}`}
-          />
-        </View>
+        <RouteMap
+          from={trip.name.split(" ")[0]}
+          to={trip.name.split(" ")[2]}
+          fromCoords={pickup}
+          toCoords={dropoff}
+          routeCoords={routeCoords}
+          title="Rota da viagem"
+          subtitle={`${trip.name} · ${trip.departureTime}`}
+        />
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Data da viagem</Text>

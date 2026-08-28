@@ -125,7 +125,7 @@ export default function ReviewsPage() {
 
         <View>
           <Text style={styles.headerTitle}>Avaliações</Text>
-          <Text style={styles.headerSubtitle}>As avaliações que fizeste</Text>
+          <Text style={styles.headerSubtitle}>As avaliações que recebeste</Text>
         </View>
 
         <View style={{ width: 42 }} />

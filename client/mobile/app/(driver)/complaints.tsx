@@ -337,6 +337,7 @@ const styles = StyleSheet.create({
 
   list: {
     gap: 10,
+    marginBottom : 100
   },
 
   complaintCard: {

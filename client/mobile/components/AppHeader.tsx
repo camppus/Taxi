@@ -255,7 +255,9 @@ export default function AppHeader({ onMenuPress, userRole }: AppHeaderProps) {
             <View style={styles.profileInfo}>
               <Text style={styles.profileName}>Olá, Francisco</Text>
 
-              <Text style={styles.profileSubtitle}>Passageiro</Text>
+              <Text style={styles.profileSubtitle}>
+                {userRole == UserRole.DRIVER ? "Mototista" : "Passageiro"}
+              </Text>
             </View>
 
             <Pressable style={styles.closeButton} onPress={() => closeMenu()}>
