@@ -1,4 +1,3 @@
-import BackButton from "@/components/BackButton";
 import Input from "@/components/Input";
 import Lable from "@/components/Label";
 import OTPInput from "@/components/OTPInput";
@@ -38,7 +37,7 @@ export default function LoginPage() {
 
   const scrollRef = useRef<ScrollView>(null);
   const isPhoneValid = phone.replace(/\D/g, "").length >= 9;
-  const isOtpValid = otp.length >= 5;
+  const isOtpValid = otp.length === 5;
 
   function handleContinue() {
     if (step === 1) {
@@ -204,7 +203,7 @@ export default function LoginPage() {
                 style={styles.otpContainer}
               >
                 <OTPInput
-                  processing={otp.length >= 5}
+                  processing={otp.length === 5}
                   value={otp}
                   onChange={setOtp}
                 />
