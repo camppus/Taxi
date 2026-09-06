@@ -2,19 +2,22 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule, ObserveInstrument } from './app.module.js';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { ConsoleLogger, ValidationPipe, VersioningType } from '@nestjs/common';
 import compression from 'compression';
 import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     instrument: ObserveInstrument,
+    logger: new ConsoleLogger({
+      prefix: 'Ride API',
+    }),
   });
   const config = new DocumentBuilder()
-    .setTitle('Ecommerce API')
-    .setDescription('Ecommerce API documentation')
+    .setTitle('Ride API')
+    .setDescription('Ride API documentation')
     .setVersion('1.0')
-    .addTag('ecommerce')
+    .addTag('Ride')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
