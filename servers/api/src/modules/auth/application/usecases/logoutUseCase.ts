@@ -41,6 +41,7 @@ export default class LogoutUseCase implements UseCase<{
         },
       });
     }
+    
     return {
       data: {
         sessionsIds,

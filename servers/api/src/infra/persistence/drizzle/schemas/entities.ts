@@ -32,8 +32,6 @@ import {
   walletTransactionTypeEnum,
 } from './enums.js';
 
-
-
 export const users = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
 
@@ -359,7 +357,6 @@ export const driverDocs = pgTable(
   ],
 );
 
-
 export const vehicles = pgTable(
   'vehicles',
   {
@@ -535,11 +532,6 @@ export const bookings = pgTable(
   ],
 );
 
-/* =========================================================
- * WALLET (users e motoristas partilham a mesma estrutura,
- * já que driver.userId aponta sempre para um user)
- * ========================================================= */
-
 export const wallets = pgTable(
   'wallets',
   {
@@ -613,13 +605,6 @@ export const walletTransactions = pgTable(
   ],
 );
 
-/* =========================================================
- * PAYMENTS
- * O dinheiro pago fica retido na plataforma (status PAID = capturado,
- * NÃO significa que já está com o motorista). Só é libertado para
- * o motorista via tripPayouts, no fim da viagem (ver endBooking abaixo).
- * ========================================================= */
-
 export const payments = pgTable(
   'payments',
   {
@@ -689,21 +674,6 @@ export const payments = pgTable(
       .where(sql`${table.isDefault} = true`),
   ],
 );
-
-/* =========================================================
- * END BOOKING (fim de viagem via QR code) + PAYOUT
- *
- * Fluxo:
- * 1. Driver termina a corrida -> cria um tripEnding (gera qrToken único).
- * 2. Cada passageiro com booking CONFIRMED escaneia o QR -> cria um
- *    bookingConfirmation (bookingId, tripEndingId) — idempotente por
- *    causa do unique index (repetir o scan não duplica).
- * 3. Quando confirmedCount === totalBookings, o sistema marca o
- *    tripEnding como COMPLETED, a trip como COMPLETED, todas as
- *    bookings como COMPLETED, e cria UM único tripPayout (unique por
- *    tripEndingId) que credita a wallet do motorista com o total menos
- *    a taxa da plataforma — isto garante que o payout só acontece 1x.
- * ========================================================= */
 
 export const tripEndings = pgTable(
   'trip_endings',
@@ -837,10 +807,6 @@ export const tripPayouts = pgTable(
   ],
 );
 
-/* =========================================================
- * CHAT (por trip, entre driver e passageiros)
- * ========================================================= */
-
 export const tripMessages = pgTable(
   'trip_messages',
   {
@@ -871,10 +837,6 @@ export const tripMessages = pgTable(
     index('trip_messages_sender_id_idx').on(table.senderId),
   ],
 );
-
-/* =========================================================
- * REVIEWS (após finalização da trip — nos 2 sentidos)
- * ========================================================= */
 
 export const reviews = pgTable(
   'reviews',
@@ -918,10 +880,6 @@ export const reviews = pgTable(
     ),
   ],
 );
-
-/* =========================================================
- * NOTIFICATIONS
- * ========================================================= */
 
 export const notifications = pgTable(
   'notifications',

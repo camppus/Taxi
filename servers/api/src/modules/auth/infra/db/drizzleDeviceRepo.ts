@@ -38,7 +38,7 @@ export default class DrizzleDeviceRepo implements DeviceRepo {
         updatedAt: data.getUpdatedAt(),
       })
       .onConflictDoUpdate({
-        target: [deviceTable.id, deviceTable.deviceKey],
+        target: deviceTable.deviceKey,
         set: {
           deviceKey: data.deviceKey,
           platform: data.platform,
@@ -132,11 +132,7 @@ export default class DrizzleDeviceRepo implements DeviceRepo {
         pushToken: data.pushToken,
       })
       .onConflictDoUpdate({
-        target: [
-          userDeviceTable.id,
-          userDeviceTable.userId,
-          userDeviceTable.deviceId,
-        ],
+        target: [userDeviceTable.userId, userDeviceTable.deviceId],
         set: {
           isActive: data.isActive,
           lastSeenAt: data.lastSeenAt,

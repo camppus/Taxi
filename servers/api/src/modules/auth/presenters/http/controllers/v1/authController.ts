@@ -114,13 +114,8 @@ export default class AuthControllerV1 {
 
   @Post('logout')
   @ApiBearerAuth()
-  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
-    summary: 'Logout current session',
-  })
-  @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
-    description: 'Logged out successfully',
+    summary: 'Logout  sessions',
   })
   async logout(@Body() dto: LogoutDto, @Current('userId') userId: string) {
     return await this.logoutUseCase.handle({
