@@ -14,6 +14,20 @@ export default class DrizzleAuthRepo implements AuthRepo {
     private readonly drizzle: DrizzleDb,
   ) {}
 
+  async registerUser(data: AuthUser): Promise<void> {
+    try {
+      await this.drizzle.insert(usersTable).values({
+        name: data.getName(),
+        phone: data.getPhone(),
+        id: data.getId(),
+        status: 'ACTIVE',
+        isAdmin: false,
+      });
+    } catch (error) {
+      throw new Error(error as any);
+    }
+  }
+
   async getUserById(id: string): Promise<AuthUser | null> {
     const [user] = await this.drizzle
       .select()
@@ -31,6 +45,7 @@ export default class DrizzleAuthRepo implements AuthRepo {
       name: new FullName(user.name),
       phone: new Phone(user.phone),
       updateAt: user.updatedAt,
+      isAdmin: user.isAdmin,
     });
   }
 
@@ -51,6 +66,7 @@ export default class DrizzleAuthRepo implements AuthRepo {
       name: new FullName(user.name),
       phone: new Phone(user.phone),
       updateAt: user.updatedAt,
+      isAdmin: user.isAdmin,
     });
   }
 }

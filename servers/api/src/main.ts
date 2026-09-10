@@ -5,6 +5,7 @@ import { apiReference } from '@scalar/nestjs-api-reference';
 import { ConsoleLogger, ValidationPipe, VersioningType } from '@nestjs/common';
 import compression from 'compression';
 import helmet from 'helmet';
+import { HttpExceptionFilter } from './infra/http/interceptors/ExceptionFilter.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -18,6 +19,7 @@ async function bootstrap() {
     .setDescription('Ride API documentation')
     .setVersion('1.0')
     .addTag('Ride')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -30,15 +32,11 @@ async function bootstrap() {
     }),
   );
   app.enableCors();
-  app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.use(helmet());
   app.use(compression());
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.enableShutdownHooks();
-  app.enableVersioning({
-    type: VersioningType.URI,
-    defaultVersion: '1',
-  });
   await app.listen(process.env.PORT ?? 3000);
 }
 await bootstrap();

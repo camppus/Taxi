@@ -3,7 +3,6 @@ import Enttiy from '../../../../shared/entities/entitiy.js';
 
 export enum ChallengeContext {
   LOGIN = 'LOGIN',
-  UPDATE_PHONE = 'UPDATE_PHONE',
 }
 
 export interface ChallengeProps {

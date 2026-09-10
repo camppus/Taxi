@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { BcryptProvider } from './encript/provider/bcryptProvider.js';
-import { JwtService } from '@nestjs/jwt';
+import JwtService from './jwt/jwtService.js';
 
 @Global()
 @Module({
@@ -11,6 +11,6 @@ import { JwtService } from '@nestjs/jwt';
     },
     JwtService,
   ],
-  exports: ['EncriptProvider'],
+  exports: ['EncriptProvider', JwtService],
 })
 export default class SecurityModule {}

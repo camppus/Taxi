@@ -32,14 +32,14 @@ import {
   walletTransactionTypeEnum,
 } from './enums.js';
 
+
+
 export const users = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
 
   image: text('image'),
 
   isAdmin: boolean('is_admin').notNull().default(false),
-
-  isPhoneVerified: boolean('is_admin').notNull().default(false),
 
   name: varchar('name', { length: 255 }).notNull(),
 
@@ -359,9 +359,6 @@ export const driverDocs = pgTable(
   ],
 );
 
-/* =========================================================
- * VEHICLE
- * ========================================================= */
 
 export const vehicles = pgTable(
   'vehicles',

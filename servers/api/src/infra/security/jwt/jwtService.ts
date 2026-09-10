@@ -8,6 +8,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 export interface JwtPayloadData {
   sub: string;
   sessionId: string;
+  isAdmin: boolean;
 }
 
 @Injectable()
@@ -45,19 +46,15 @@ export default class JwtService {
       return {
         sub: payload.sub,
         sessionId: payload.sessionId,
+        isAdmin: payload.isAdmin,
       };
     } catch {
       throw new UnauthorizedException('Invalid or expired token');
     }
   }
 
-  decode(token: string): JwtPayload | null {
-    const payload = jwt.decode(token);
-
-    if (!payload || typeof payload === 'string') {
-      return null;
-    }
-
-    return payload;
+  decode(token: string): JwtPayloadData | null {
+    const payload = jwt.decode(token) as JwtPayloadData;
+    return payload?.sub ? payload : null;
   }
 }

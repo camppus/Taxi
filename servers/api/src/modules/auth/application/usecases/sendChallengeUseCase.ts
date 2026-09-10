@@ -1,19 +1,15 @@
-import { Inject } from '@nestjs/common';
-import Phone from '../../../../shared/entities/phone.js';
+import { Inject, Injectable } from '@nestjs/common';
 import { ServerMessage, UseCase } from '../../../../shared/types.js';
 import type AuthRepo from '../../domain/repositories/authRepo.js';
 import type { SmsProvider } from '../../../../infra/sms/smsModule.js';
-import Challenge, {
-  ChallengeContext,
-} from '../../domain/entities/challenge.js';
+import Challenge from '../../domain/entities/challenge.js';
 import type { EncriptProvider } from '../../../../infra/security/encript/encriptProvider.js';
 import type ChallengeRepo from '../../domain/repositories/challengeRepo.js';
 import getUser from '../../domain/service/getUser.js';
+import SendChallengeDto from '../dto/requestChallangeDto.js';
 
-export default class RequestLoginUseCase implements UseCase<
-  Phone,
-  ServerMessage
-> {
+@Injectable()
+export default class RequestChallangeUseCase implements UseCase<SendChallengeDto> {
   constructor(
     @Inject('AuthRepo')
     private readonly authRepo: AuthRepo,
@@ -24,10 +20,10 @@ export default class RequestLoginUseCase implements UseCase<
     @Inject('EncriptProvider')
     private readonly encriptProvider: EncriptProvider,
   ) {}
-  async handle(data: Phone): Promise<ServerMessage> {
+  async handle(data: SendChallengeDto): Promise<ServerMessage> {
     const user = await getUser({
       repo: this.authRepo,
-      unique: data.toString(),
+      unique: data.to.toString(),
     });
 
     const challengeCode = Challenge.generateChallengeCode();
@@ -37,7 +33,7 @@ export default class RequestLoginUseCase implements UseCase<
     const challange = new Challenge({
       attempts: 0,
       channel: 'SMS',
-      context: ChallengeContext.LOGIN,
+      context: data.context,
       createdAt: new Date(),
       expiresAt: expiration,
       hash: hashChallangCode,
@@ -49,7 +45,7 @@ export default class RequestLoginUseCase implements UseCase<
 
     await this.challengeRepo.save(challange);
     await this.smsProvider.send({
-      message: `Seu código de verificação é: ${challengeCode}. Este código expira em ${expiration.getMinutes()} minutos. Não compartilhe este código com ninguém.`,
+      message: `Seu código de verificação é: ${challengeCode}. Este código expira em ${expiration.getMinutes()} minutos. Não compartilhe este código com ninguém. Caso não foi você quem requisitou ignore essa mesnagem`,
       to: user.getPhone(),
     });
     return {

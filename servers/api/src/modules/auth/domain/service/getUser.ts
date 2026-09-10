@@ -18,6 +18,5 @@ export default async function getUser({ repo, unique }: { repo: AuthRepo; unique
   if (!user.getIsACtive()) {
     throw new Error('User must be active');
   }
-
   return user;
 }

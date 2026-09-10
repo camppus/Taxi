@@ -9,6 +9,7 @@ export interface AuthUserProps {
   isActive: Boolean;
   createdAt: Date;
   updateAt: Date;
+  isAdmin: boolean;
 }
 
 export class AuthUser extends Enttiy {
@@ -23,5 +24,8 @@ export class AuthUser extends Enttiy {
   }
   getName() {
     return this.props.name.toString();
+  }
+  isAdmin() {
+    return this.props.isAdmin;
   }
 }

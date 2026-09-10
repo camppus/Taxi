@@ -11,6 +11,8 @@ import SmsModule from './infra/sms/smsModule.js';
 import MessagingModule from './infra/messaging/messagingModule.js';
 import StorageModule from './infra/storage/storageModule.js';
 import SecurityModule from './infra/security/securityModule.js';
+import AuthModule from './modules/auth/presenters/http/authModule.js';
+import HttpModule from './infra/http/httpModule.js';
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
@@ -56,6 +58,8 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     MessagingModule,
     StorageModule,
     SecurityModule,
+    AuthModule,
+    HttpModule,
   ],
 })
 export class AppModule {}

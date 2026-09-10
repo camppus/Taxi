@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import SmsHub from './providers/SmsHub.js';
 
 export interface SmsProvider {
   send(data: { to: string; message: string }): Promise<void>;
 }
 
+@Global()
 @Module({
   providers: [
     {

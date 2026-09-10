@@ -1,5 +1,5 @@
-export interface UseCase<Input, Output> {
-  handle(data: Input): Promise<Output>;
+export interface UseCase<Input> {
+  handle(data: Input): Promise<ServerMessage>;
 }
 
 export interface ServerMessage {

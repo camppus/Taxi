@@ -10,14 +10,12 @@ import type DeviceRepo from '../../domain/repositories/deviceRepo.js';
 import { registerDevice } from '../../domain/service/registerDevice.js';
 import JwtService from '../../../../infra/security/jwt/jwtService.js';
 import { registerUserDevice } from '../../domain/service/registerUserDevice.js';
-import Session from '../../domain/entities/session.js';
 import type { CacheProvider } from '../../../../infra/caching/CacheProvider.js';
 import type SessionRepo from '../../domain/repositories/sessionRepo.js';
+import challengeResolve from '../../domain/service/challengeResolve.js';
+import generateSession from '../../domain/service/genarateSession.js';
 
-export default class LoginUseCase implements UseCase<
-  VerifyChallengeDto,
-  ServerMessage
-> {
+export default class LoginUseCase implements UseCase<VerifyChallengeDto> {
   constructor(
     @Inject('AuthRepo')
     private readonly authRepo: AuthRepo,
@@ -33,34 +31,17 @@ export default class LoginUseCase implements UseCase<
     private readonly sessionRepo: SessionRepo,
     private readonly jwtService: JwtService,
   ) {}
+
   async handle(data: VerifyChallengeDto): Promise<ServerMessage> {
-    const challenge = await this.challengeRepo.getById(data.challengeId);
-
-    if (!challenge) {
-      throw new Error('Challenge not found');
-    }
-
-    if (challenge.context != ChallengeContext.LOGIN) {
-      throw new Error('Wrong challenge Context');
-    }
-
-    if (!challenge.canUse()) {
-      throw new Error('This challenge can´t be used');
-    }
-
-    const isMatch = this.encriptProvider.macth({
-      hash: challenge.hash,
-      plainText: data.challengeCode,
+    const challenge = await challengeResolve({
+      encriptProvider: this.encriptProvider,
+      id: data.challengeId,
+      repo: this.challengeRepo,
+      rule: {
+        code: data.challengeCode,
+        context: ChallengeContext.LOGIN,
+      },
     });
-
-    if (!isMatch) {
-      challenge.updateAttempts();
-      await this.challengeRepo.save(challenge);
-      throw new Error('Wrong challenge code');
-    }
-
-    challenge.use();
-    await this.challengeRepo.save(challenge);
 
     const user = await getUser({
       repo: this.authRepo,
@@ -68,7 +49,6 @@ export default class LoginUseCase implements UseCase<
     });
 
     const { challengeId, ...deviceData } = data;
-
     const device = await registerDevice({
       device: deviceData,
       repo: this.deviceRepo,
@@ -83,32 +63,17 @@ export default class LoginUseCase implements UseCase<
       userId: user.getId(),
     });
 
-    const refreshToken = Session.generateRefreshToken();
-    const refreshHash = this.encriptProvider.hash(refreshToken);
-    const session = new Session({
-      id: crypto.randomUUID(),
-      userId: user.getId(),
-      userDeviceId: userDevice.getId(),
-      isActive: true,
-      refreshHash,
-      expiresAt: Session.getExpirationTime(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-
-    await this.sessionRepo.save(session);
-    const token = this.jwtService.generate({
-      sessionId: session.getId(),
-      sub: user.getId(),
-    });
-
-    this.chacheProvider.add(
-      {
-        expiresAt: session.expiresAt,
-        isActive: true,
+    const { session, token, refreshToken } = await generateSession({
+      chacheProvider: this.chacheProvider,
+      encriptProvider: this.encriptProvider,
+      jwtService: this.jwtService,
+      repo: this.sessionRepo,
+      session: {
+        userDeviceId: userDevice.getId(),
+        userId: user.getId(),
+        isAdmin: user.isAdmin(),
       },
-      `session.${session.getId()}`,
-    );
+    });
 
     return {
       data: {
